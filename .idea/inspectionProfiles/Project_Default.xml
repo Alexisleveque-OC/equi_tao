@@ -1,0 +1,98 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0" is_locked="false">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="AnnotationDocBlockClassConstantNotFound" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AnnotationDocBlockConstantDeprecated" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="AnnotationDocBlockTagClassNotFound" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ComposerJsonFileReferencesInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ComposerJsonSchema" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DoctrineTypeDeprecatedInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ES6ConvertLetToConst" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="ES6PreferShortImport" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="FilePath" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="GrazieInspection" enabled="false" level="TYPO" enabled_by_default="false" />
+    <inspection_tool class="JSConstructorReturnsPrimitive" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSMismatchedCollectionQueryUpdate" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="queries" value="trace,write,forEach,length" />
+      <option name="updates" value="pop,push,shift,splice,unshift,add,insert,remove" />
+    </inspection_tool>
+    <inspection_tool class="JSObsoletePrivateAccessSyntax" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JSOctalInteger" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JSRedeclarationOfBlockScope" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="JSRedundantSwitchStatement" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JsonReference" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="JsonSchema" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Misconfiguration" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="MongoJSResolveInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="MysqlLoadDataPathInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="NodeCoreCodingAssistance" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="NodeJsCodingAssistanceForCoreModules" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="NonShortCircuitBooleanExpressionJS" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="NotInstalledPackage" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="OctalIntegerJS" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="OraDeprecateTypeInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PackageInfo" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpCSValidationInspection" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="CODING_STANDARD" value="OpenxtremCodingStandard" />
+      <option name="CUSTOM_RULESET_PATH" value="/var/www/html/mediboard/dev/CodeSniffer/Standard/ruleset.xml" />
+      <option name="WARNING_HIGHLIGHT_LEVEL_NAME" value="ERROR" />
+      <option name="SHOW_SNIFF_NAMES" value="true" />
+      <option name="INSTALLED_PATHS" value="/var/www/html/mediboard/dev/CodeSniffer/Standard" />
+      <option name="EXTENSIONS" value="php" />
+    </inspection_tool>
+    <inspection_tool class="PhpClassImplementsSolelyTraversableInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="PhpComposerDuplicatedRequirementInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpCompoundNamespaceDepthInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpDisabledQualityToolComposerInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpDocMissingReturnTagInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpDocMissingThrowsInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpDocSignatureInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpElementIsNotAvailableInCurrentPhpVersionInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="PhpExpressionAlwaysNullInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpIllegalPsrClassPathInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpLongTypeFormInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpMissingParentCallCommonInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpMissingReturnTypeInspection" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="PhpMissingVisibilityInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpModifierOrderInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpMultipleClassesDeclarationsInOneFile" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpNewClassMissingParameterListInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpNotInstalledPackagesInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpParameterByRefIsNotUsedAsReferenceInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpPossiblePolymorphicInvocationInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpPrivateFieldCanBeLocalVariableInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpSeparateElseIfInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpTernaryExpressionCanBeReplacedWithConditionInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpTraitsUseListInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpUndefinedCallbackInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpUndefinedVariableInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpUnhandledExceptionInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpUnitAssertArrayHasKeyInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitAssertContainsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitAssertCountInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitAssertEqualsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitAssertFileEqualsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitCoversByAccessModifierIsDeprecatedInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitDeprecatedExpectExceptionInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitExpectedExceptionDocTagIsDeprecatedInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnitMisorderedAssertEqualsArgumentsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpUnusedFieldDefaultValueInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PhpVarUsageInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="ProjectFingerprint" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlDtInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlMisleadingReferenceInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SqlMissingReturnInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="SqlTransactionStatementInTriggerInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TodoComment" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="TwigExtensionDeprecatedInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptExplicitMemberType" enabled="false" level="INFORMATION" enabled_by_default="false" />
+    <inspection_tool class="TypeScriptPreferShortImport" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="TypescriptExplicitMemberType" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="UnterminatedStatementJS" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoreSemicolonAtEndOfBlock" value="true" />
+    </inspection_tool>
+    <inspection_tool class="YamlReference" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="YamlSchema" enabled="true" level="ERROR" enabled_by_default="true" />
+  </profile>
+</component>
