@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <a class="offset-2 col-8 text-center oi oi-account-login icon-form"></a>
+        <h1 class="registration">Inscription</h1>
+        <div class="offset-1 col-10">
+            {{ form_start(formUser) }}
+
+            {{ form_row(formUser.username, {'label':"Nom d'utilisateur",'attr':{'placeholder':"Nom d'utilisateur"}}) }}
+            {{ form_row(formUser.email, {'label':"Email d'utilisateur",'attr':{'placeholder':"Email d'utilisateur"}}) }}
+            {{ form_row(formUser.password, {'label':"Mot de passe",'attr':{'placeholder':"Mot de passe"}}) }}
+
+            <button class="btn btn-outline-success offset-xs-3 col-xs-6 offset-sm-4 col-sm-4 text-center">S'inscrire</button>
+            {{ form_end(formUser) }}
+        </div>
+
+    </div>
+{% endblock %}
