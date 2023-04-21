@@ -21,7 +21,7 @@ class UserController extends AbstractController
 
             $registerService->register($form->getData());
 
-            $this->addFlash('success', 'Vous avez été enregistré, vérifiez vos email pour valider votre compte !');
+            $this->addFlash('success', 'Votre compte a été correctement créer, vous pouvez à présent vous connecter !');
             return $this->redirectToRoute('home');
         }
 
