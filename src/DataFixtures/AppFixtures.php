@@ -34,7 +34,7 @@ class AppFixtures extends Fixture
 
         $manager->persist($admin);
 
-        for ($i=0; $i<5 ; $i++);{
+        for ($i=1; $i<=5 ; $i++){
             $user = new User();
             $hashedPassword = $this->hasher->hashPassword($user, sprintf("user%d", $i));
             $user->setRoles(['ROLE_USER'])
@@ -42,9 +42,9 @@ class AppFixtures extends Fixture
                 ->setEmail(sprintf("user%d", $i). "@mail.com")
                 ->setUsername(sprintf("user%d", $i))
                 ->setCreationDate(new \DateTime());
-           
+                
             $manager->persist($user);
-
+            
             $users[] = $user;
         }
 
