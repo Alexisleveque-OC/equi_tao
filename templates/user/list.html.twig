@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs
+{% endblock %}
+
+{% block body %}
+<div class = "container">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Nom d'utilisateur</th>
+				<th scope="col">Email</th>
+				<th scope="col">Date de création</th>
+				<th scope="col">Role</th>
+				<th scope="col">Supprimer?</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr {% if (loop.index == 0) or (loop.index is divisible by(2)) %} class="table-active" {% endif %}>
+					<th scope="row">{{user.username}}</th>
+					<td>{{user.email}}</td>
+					<td>{{user.creationDate|date("d/m/Y h:s")}}</td>
+					<td>{{user.roles[0]}}</td>
+                    <td><a class="btn btn-danger" href="#">X</a></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</tbody>
+    </div>
+</table>{% endblock %}
