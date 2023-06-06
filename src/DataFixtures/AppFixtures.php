@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
             ->setEmail('admin@mail.com')
             ->setUsername('admin')
             ->setCreationDate(new \DateTime());
-
+        $users[] = $admin;
         $manager->persist($admin);
 
         for ($i=1; $i<=5 ; $i++){
