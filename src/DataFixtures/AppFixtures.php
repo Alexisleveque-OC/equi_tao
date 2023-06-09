@@ -48,6 +48,7 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
+
         $manager->flush();
     }
 }

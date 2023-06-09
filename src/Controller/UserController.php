@@ -33,16 +33,17 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/creer-utlisateur', name: "app_create_user")]
-    #[Route('/modifier-utlisateur/{user_id}', name: "app_update_user")]
+    #[Route('/creer-utilisateur', name: "app_create_user")]
+    #[Route('/modifier-utilisateur/{user_id}', name: "app_update_user")]
     public function updateUser(Request $request,
                                RegisterService $registerService,
                                #[MapEntity(id: "user_id")] $id = null)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(UpdateUserType::class);
-//        dd($form);
+//        dump($form);
         $form->handleRequest($request);
+//        dd($form->getData());
 
         if ($form->isSubmitted() && $form->isValid()) {
 

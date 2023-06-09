@@ -22,7 +22,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $roles = [];#[ORM\OneToMany(mappedBy: 'relation', targetEntity: Rate::class)]
+    private array $roles = [];
+
+    #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Rate::class)]
     private Collection $rates;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class)]
@@ -40,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -190,7 +192,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
