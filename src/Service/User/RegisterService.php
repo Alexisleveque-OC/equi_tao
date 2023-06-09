@@ -27,16 +27,14 @@ class RegisterService
 
     public function register(User $user)
     {
-        if (!$user->getRoles()){
+        if (!$user->getRoles()) {
             $user->setRoles(['ROLE_USER']);
         }
 
         $user->setCreationDate(new \DateTimeImmutable())
             ->setRoles($user->getRoles());
-        if ($user->getPassword()) {
-            $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
-            $user->setPassword($hashedPassword);
-        }
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
+        $user->setPassword($hashedPassword);
         $this->manager->persist($user);
         $this->manager->flush();
 
