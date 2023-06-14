@@ -6,18 +6,24 @@
 {% block body %}
     <div class="container">
         <a class="offset-2 col-8 text-center oi oi-account-login icon-form"></a>
-        <h1 class="registration">Inscription</h1>
+
+        <h1 class="update_user">Créer un nouvel utilisateur</h1>
         <div class="offset-2 col-8 form_login">
-            {{ form_start(form) }}
 
-            {{ form_row(form.username, {'label':"Nom d'utilisateur",'attr':{'placeholder':"Nom d'utilisateur"}}) }}
-            {{ form_row(form.email, {'label':"Email d'utilisateur",'attr':{'placeholder':"Email d'utilisateur"}}) }}
-            {{ form_row(form.roles, {'label':"Role de l'utilisateur"}) }}
-            {{ form_row(form.password, {'label':"Mot de passe",'attr':{'placeholder':"Mot de passe"}}) }}
+            {{ form_start(formUser, {'attr': {'id' : 'formUser'}}) }}
 
+            {{ form_row(formUser.username, {'label':"Nom d'utilisateur",'attr':{'placeholder':"Nom d'utilisateur"}}) }}
+            {{ form_row(formUser.email, {'label':"Email d'utilisateur",'attr':{'placeholder':"Email d'utilisateur"}}) }}
+            {{ form_row(formUser.roles, {'label':"Role de l'utilisateur"}) }}
+            {{ form_row(formUser.password, {'label' : 'Mot de passe'}) }}
 
-            <button class="btn btn-outline-success offset-xs-3 col-xs-6 offset-sm-4 col-sm-4 text-center">Créer/modifier l'utilisateur</button>
-            {{ form_end(form) }}
+            <button id="submitFormsButton"
+                    class="btn btn-outline-success offset-xs-3 col-xs-6 offset-sm-4 col-sm-4 text-center">Créer/modifier
+                l'utilisateur
+            </button>
+
+            {{ form_end(formUser) }}
+
         </div>
 
     </div>

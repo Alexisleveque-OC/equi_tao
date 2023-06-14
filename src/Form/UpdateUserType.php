@@ -33,10 +33,10 @@ class UpdateUserType extends AbstractType
                 'expanded' => true,
             ])
             ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
+                'type' => \Symfony\Component\Form\Extension\Core\Type\PasswordType::class,
                 'first_options' => ['label' => 'Mot de passe', 'attr' => ['placeholder' => 'Mot de passe']],
                 'second_options' => ['label' => 'Confirmation de mot de passe', 'attr' => ['placeholder' => 'Confirmation du mot de passe']],
-            ]);;
+            ]);
 
     }
 

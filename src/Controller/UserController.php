@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\PasswordType;
 use App\Form\RegisterUserType;
 use App\Form\UpdateUserType;
 use App\Service\User\RegisterService;
@@ -33,34 +35,56 @@ class UserController extends AbstractController
         ]);
     }
 
+
     #[Route('/creer-utilisateur', name: "app_create_user")]
-    #[Route('/modifier-utilisateur/{user_id}', name: "app_update_user")]
-    public function updateUser(Request $request,
-                               RegisterService $registerService,
-                               #[MapEntity(id: "user_id")] $id = null)
+    public function create_user(Request $request,
+                                RegisterService $register)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $form = $this->createForm(UpdateUserType::class);
-//        dump($form);
-        $form->handleRequest($request);
-//        dd($form->getData());
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formUser = $this->createForm(UpdateUserType::class);
+        $formUser->handleRequest($request);
 
-            $registerService->register($form->getData());
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
 
-            $this->addFlash('success', 'Le compte de '. $form->getData()->getUserName()." à bien été crée.");
+            $register->register($formUser->getData());
+
+            $this->addFlash('success', 'Le compte de '. $formUser->getData()->getUserName()." a bien été crée.");
             return $this->redirectToRoute('home');
         }
 
-
         return $this->render('user/update.html.twig', [
-            'form' => $form->createView()
+            'formUser' => $formUser->createView(),
         ]);
 
+    }
 
-//        $this->addFlash('danger', "Vous n'êtes pas autorisé à voir cette page");
-//        return $this->redirectToRoute('home');
+    #[Route('/modifier-utilisateur/{user_id}', name: "app_update_user")]
+    public function updateUser(Request $request,
+                               RegisterService $registerService,
+                               #[MapEntity(id: "user_id")]User $user = null)
+    {
+        if (!$user){
+            $user = new User();
+        }
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $formUser = $this->createForm(UpdateUserType::class,$user);
+
+        $formUser->handleRequest($request);
+
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
+
+            $registerService->register($formUser->getData());
+
+            $this->addFlash('success', 'Le compte de '. $formUser->getData()->getUserName()." a été modifié avec succès.");
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('user/update.html.twig', [
+            'formUser' => $formUser->createView(),
+            'user' => $user
+        ]);
+
     }
 
     #[Route('/list-user', name: "app_list_user")]
