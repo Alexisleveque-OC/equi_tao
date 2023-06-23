@@ -20,11 +20,16 @@
             <tbody>
             {% for user in users %}
                 <tr {% if (loop.index == 0) or (loop.index is not divisible by(2)) %} class="table-active" {% endif %}>
-                    <th scope="row"><a href="{{ path('app_update_user', {'user_id':user.id}) }}">{{ user.username }}</a>
+                    <th scope="row">{{ user.username }}
+{#                        <a href="{{ path('app_update_user', {'user_id':user.id}) }}"></a>#}
                     </th>
                     <td>{{ user.email }}  </td>
                     <td>{{ user.creationDate|date("d/m/Y h:s") }}</td>
-                    <td>{{ user.roles[0] }}</td>
+                    <td><a href="{{ path('app_update_user_role', {'user_id':user.id}) }}">
+                            {% for role in user.roles %}
+                            {{ role }}
+                            {% endfor %}
+                        </a></td>
 
                     <td><a class="btn btn-danger" href="#">X</a></td>
                 </tr>

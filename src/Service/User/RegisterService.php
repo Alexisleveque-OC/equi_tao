@@ -10,9 +10,6 @@ class RegisterService
 {
 
 
-    /**
-     * @var EntityManagerInterface
-     */
     public EntityManagerInterface $manager;
     /**
      * @var UserPasswordHasherInterface
@@ -32,10 +29,13 @@ class RegisterService
             $user->setRoles(['ROLE_USER']);
         }
 
+        if (in_array('ROLE_ADMIN', $user->getRoles())){
+            $user->setRoles(['ROLE_ADMIN']);
+        }
+
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
 
         $user->setCreationDate(new \DateTimeImmutable())
-            ->setRoles($user->getRoles())
             ->setPassword($hashedPassword);
 
         $this->manager->persist($user);

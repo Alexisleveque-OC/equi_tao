@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\PasswordType;
 use App\Form\RegisterUserType;
+use App\Form\UpdateRoleType;
 use App\Form\UpdateUserType;
+use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
+use App\Service\User\UpdateRoleService;
 use App\Service\User\UserListService;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,57 +37,61 @@ class UserController extends AbstractController
         ]);
     }
 
-
-    #[Route('/creer-utilisateur', name: "app_create_user")]
-    public function create_user(Request $request,
-                                RegisterService $register)
+    #[Route('/creer-utlisateur', name: "app_create_user")]
+    public function updateUser(Request         $request,
+                               RegisterService $registerService)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $this->createForm(UpdateUserType::class);
 
-        $formUser = $this->createForm(UpdateUserType::class);
-        $formUser->handleRequest($request);
+        $form->handleRequest($request);
 
-        if ($formUser->isSubmitted() && $formUser->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $register->register($formUser->getData());
+            $registerService->register($form->getData());
 
-            $this->addFlash('success', 'Le compte de '. $formUser->getData()->getUserName()." a bien été crée.");
-            return $this->redirectToRoute('home');
+            $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été crée.");
+            return $this->redirectToRoute('app_list_user');
         }
 
-        return $this->render('user/update.html.twig', [
-            'formUser' => $formUser->createView(),
-        ]);
 
+        return $this->render('user/create.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
-    #[Route('/modifier-utilisateur/{user_id}', name: "app_update_user")]
-    public function updateUser(Request $request,
-                               RegisterService $registerService,
-                               #[MapEntity(id: "user_id")]User $user = null)
+
+    #[Route('/modifier-role/{user_id}', name: "app_update_user_role")]
+    public function updateRole(Request $request,
+                               UpdateRoleService $updateRoleService,
+                               UserRepository $userRepository,
+                               int $user_id)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $user = $userRepository->findOneById($user_id);
+
         if (!$user){
-            $user = new User();
-        }
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $formUser = $this->createForm(UpdateUserType::class,$user);
-
-        $formUser->handleRequest($request);
-
-        if ($formUser->isSubmitted() && $formUser->isValid()) {
-
-            $registerService->register($formUser->getData());
-
-            $this->addFlash('success', 'Le compte de '. $formUser->getData()->getUserName()." a été modifié avec succès.");
-            return $this->redirectToRoute('home');
+            $this->addFlash('info', "Vous n'avez pas séléctionner d'utilisateur ou celui-ci n'existe pas.");
+            return $this->redirectToRoute('app_list_user');
         }
 
-        return $this->render('user/update.html.twig', [
-            'formUser' => $formUser->createView(),
-            'user' => $user
+        $form = $this->createForm(UpdateRoleType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $user = $updateRoleService->updateRole($form->getData());
+            $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été modifié.");
+            return $this->redirectToRoute('app_list_user');
+        }
+
+        return $this->render('user/update_role.html.twig', [
+            'form' => $form,
+            'user' => $user,
         ]);
 
-    }
+    } 
+
 
     #[Route('/list-user', name: "app_list_user")]
     public function listUser(UserListService $userListService)

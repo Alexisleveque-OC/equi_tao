@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un role
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+    {% dump user %}
+        <h3 class="update_user">Modifier le role de l'utilisateur : "{{ user.username }}"</h3>
+        <div class="offset-2 col-8 form_login">
+
+            {{ form_start(form) }}
+
+            {{ form_row(form.roles, {'label':"Role de l'utilisateur"}) }}
+
+            <button id="submitFormsButton"
+                    class="btn btn-outline-success text-center">Modifier le role de
+                l'utilisateur
+            </button>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+{% endblock %}
