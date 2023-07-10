@@ -3,7 +3,7 @@ namespace App\Service\User;
 
 use App\Repository\UserRepository;
 
-class UserListService{
+class UserFinderService{
 
 
     /**
@@ -16,8 +16,13 @@ class UserListService{
         $this->repos = $repos;
     }
 
-    public function list()
+    public function listAll()
     {
         return $this->repos->findAll();
+    }
+
+    public function findOneUser(int $id)
+    {
+        return $this->repos->findOneById($id);
     }
 }

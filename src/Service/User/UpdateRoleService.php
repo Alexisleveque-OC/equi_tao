@@ -20,7 +20,8 @@ class UpdateRoleService
 
     public function updateRole(User $user)
     {
-        if (!$user->getRoles()) {
+
+        if (!$user->getRoles() || $user->getRoles()['1'] != null) {
             $user->setRoles(['ROLE_USER']);
         }
 
