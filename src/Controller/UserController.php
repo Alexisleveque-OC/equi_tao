@@ -144,14 +144,8 @@ class UserController extends AbstractController
     #[Route('/utilisateur/{user_id}', name: "app_show_user")]
     public function showUser(UserFinderService $userFinder, int $user_id)
     {
-//        $this->denyAccessUnlessGranted(('ROLE_ADMIN'));
-
         /** @var User $user */
         $user = $userFinder->findOneUser($user_id);
-//dd($this->getUser()->getRoles());
-        if ($user->getId() != $this->getUser()->getUserIdentifier() || $this->getUser()->getRoles() != 'ROLE_ADMIN'){
-
-        }
 
         return $this->render('user/show.html.twig', [
             'user' => $user

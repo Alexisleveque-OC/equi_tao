@@ -9,8 +9,15 @@
             <div class="card border-primary col-4">
                 <h4 class="card-header text-center">Photo de profil</h4>
                 <div class="card-body">
-                    <div class="text-center"><img src="https://picsum.photos/300/300" alt="Image de profil" ></div>
-                    <p class="card-text">image !</p>
+                    <p class="card-text">
+                        {% if user.image is null %}
+                        <img class="avatar_profil" src="{{ asset('Image/avatar.png') }}"
+                             alt="avatar d'utilisateur non défini">
+                        {% else %}
+                            <img class="avatar_profil" src="{{ user.image.url }}" alt="Photo de l'utilisateur {{ user.username }}">
+                    {% endif %}
+                    image !
+                    </p>
                 </div>
             </div>
             <div class="card border-primary offset-1 col-7">
@@ -19,12 +26,13 @@
                     <h4 class="card-title">Mon profil</h4>
                     <p class="card-text">Mon email : {{ user.email }}</p>
                     <ul class="row">
-                        <li class="col-4">Mes derniers commentaire</li>
-                        <li class="col-4">Mes derniers commentaire</li>
-                        <li class="col-4">Mes derniers commentaire</li>
+                        <li class="col-4">Mes derniers commentaires</li>
+                        <li class="col-4">Mes derniers commentaires</li>
+                        <li class="col-4">Mes derniers commentaires</li>
                     </ul>
                     {% if app.user == user %}
-                        <a class="btn btn-primary" href="{{ path('app_update_user',{'user_id' : user.id}) }}">Modifier mon profil</a>
+                        <a class="btn btn-primary" href="{{ path('app_update_user',{'user_id' : user.id}) }}">Modifier
+                            mon profil</a>
                     {% endif %}
                 </div>
             </div>

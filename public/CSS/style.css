@@ -1,3 +1,12 @@
 .container {
-    padding: 100px;
+    padding-top: 100px;
+}
+.avatar_profil
+{
+    max-height: 100%;
+    max-width: 100%;
+}
+.bg-primary {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }

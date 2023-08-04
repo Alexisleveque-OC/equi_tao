@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Image;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -18,9 +19,14 @@ class AppFixtures extends Fixture
     {
         $this->hasher = $hasher;
     }
-    
+
     public function load(ObjectManager $manager): void
     {
+        $image = new Image();
+        $image->setAlt('Image d\'avatar inconnu')
+            ->setName('Avatar de inconnu')
+            ->setUrl('/Image/avatar_test.png');
+        $manager->persist($image);
 
         $users = [];
 
@@ -30,21 +36,33 @@ class AppFixtures extends Fixture
             ->setPassword($hashedPassword)
             ->setEmail('admin@mail.com')
             ->setUsername('admin')
-            ->setCreationDate(new \DateTime());
+            ->setCreationDate(new \DateTime())
+            ->setImage($image);
         $users[] = $admin;
         $manager->persist($admin);
 
-        for ($i=1; $i<=5 ; $i++){
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i % 2 == 0) {
+
+                $image = new Image();
+                $image->setAlt('Image d\'avatar inconnu')
+                    ->setName('Avatar de inconnu')
+                    ->setUrl('/Image/avatar_test.png');
+                $manager->persist($image);
+            }
+
+            $users = [];
             $user = new User();
             $hashedPassword = $this->hasher->hashPassword($user, sprintf("user%d", $i));
             $user->setRoles(['ROLE_USER'])
                 ->setPassword($hashedPassword)
-                ->setEmail(sprintf("user%d", $i). "@mail.com")
+                ->setEmail(sprintf("user%d", $i) . "@mail.com")
                 ->setUsername(sprintf("user%d", $i))
-                ->setCreationDate(new \DateTime());
-                
+                ->setCreationDate(new \DateTime())
+                ->setImage($image);
+
             $manager->persist($user);
-            
+
             $users[] = $user;
         }
 
