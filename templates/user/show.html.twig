@@ -11,12 +11,18 @@
                 <div class="card-body">
                     <p class="card-text">
                         {% if user.image is null %}
-                        <img class="avatar_profil" src="{{ asset('Image/avatar.png') }}"
-                             alt="avatar d'utilisateur non défini">
+                            <img class="avatar_profil" src="{{ asset('Image/avatar.png') }}"
+                                 alt="avatar d'utilisateur non défini">
                         {% else %}
-                            <img class="avatar_profil" src="{{ user.image.url }}" alt="Photo de l'utilisateur {{ user.username }}">
-                    {% endif %}
-                    image !
+                            <img class="avatar_profil" src="{{ user.image.url }}"
+                                 alt="Photo de l'utilisateur {{ user.username }}">
+                        {% endif %}
+                        {{ form_start(formImage, {'action':path('upload_image_user', {'user': user.id})}) }}
+                        {{ form_row(formImage.image) }}
+                        <div class="text-center">
+                            <button class="btn btn-success">Changer mon image de profil</button>
+                        </div>
+                    {{ form_end(formImage) }}
                     </p>
                 </div>
             </div>

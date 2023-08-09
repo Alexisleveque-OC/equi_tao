@@ -7,6 +7,7 @@ use App\Form\RegisterUserType;
 use App\Form\UpdateRoleType;
 use App\Form\UpdateUserForAdminType;
 use App\Form\UpdateUserType;
+use App\Form\UploadImageType;
 use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
 use App\Service\User\UpdateRoleService;
@@ -147,8 +148,12 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $userFinder->findOneUser($user_id);
 
+        $formImage = $this->createForm(UploadImageType::class);
+
+
         return $this->render('user/show.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'formImage' => $formImage
         ]);
 
     }
