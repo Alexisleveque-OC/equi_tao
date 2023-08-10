@@ -25,6 +25,12 @@ class UploadController extends AbstractController
             $this->addFlash('info', "Vous n'avez pas séléctionner d'utilisateur ou celui-ci n'existe pas.");
             return $this->redirectToRoute('home');
         }
+
+        if ($user !== $this->getUser()){
+            $this->addFlash("danger", "Vous n'avez pas l'autorisation de changer l'image de profil d'un autre utilisateur.");
+            return $this->redirectToRoute('home');
+        }
+
         $form = $this->createForm(UploadImageType::class);
         $form->handleRequest($request);
 
