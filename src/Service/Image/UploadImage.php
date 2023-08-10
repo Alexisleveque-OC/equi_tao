@@ -2,10 +2,8 @@
 
 namespace App\Service\Image;
 
-use App\Entity\Image;
-use App\Entity\User;
+use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -20,7 +18,10 @@ class UploadImage
         $this->slugger = $slugger;
     }
 
-    public function saveImageOnServer(User $user, UploadedFile $file)
+    /**
+     * @throws Exception
+     */
+    public function saveImageOnServer(UploadedFile $file)
     {
         $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFileName);
@@ -29,7 +30,7 @@ class UploadImage
         try {
             $file = $file->move($this->imageDirectory, $newFileName);
         } catch (FileException $e) {
-            throw new \Exception("Le fichier n'a pas pus être enregistré.");
+            throw new Exception("Le fichier n'a pas pus être enregistré. Liste d'erreur : $e");
         }
         return $file;
 

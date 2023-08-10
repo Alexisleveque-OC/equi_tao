@@ -4,20 +4,17 @@ namespace App\Service\Image;
 
 use App\Entity\Image;
 use App\Entity\User;
-use App\Repository\ImageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 class SaveImage
 {
-    private ImageRepository $imageRepository;
     private EntityManagerInterface $manager;
     private string $imageDirectory;
 
-    public function __construct(EntityManagerInterface $manager, ImageRepository $imageRepository, string $imageDirectory)
+    public function __construct(EntityManagerInterface $manager, string $imageDirectory)
     {
         $this->manager = $manager;
-        $this->imageRepository = $imageRepository;
         $this->imageDirectory = $imageDirectory;
     }
 

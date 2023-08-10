@@ -29,8 +29,9 @@ class UploadController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            $imageSaved = $uploadImage->saveImageOnServer($user, $form->get('image')->getData());
+            $imageSaved = $uploadImage->saveImageOnServer($form->get('image')->getData());
             $saveImageOnUser->saveImageOnUser($user, $imageSaved);
+            $this->addFlash('success', "Votre image a bien été modifié.");
         }
 
         return $this->render('user/show.html.twig', [
