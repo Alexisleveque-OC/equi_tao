@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UploadImageType;
+use App\Service\Image\SaveImage;
 use App\Service\Image\UploadImage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class UploadController extends AbstractController
 {
     #[Route('/upload/image_user/{user}', name: 'upload_image_user')]
-    public function uploadImageUser(Request $request, User $user, UploadImage $uploadImage): Response
+    public function uploadImageUser(Request $request, User $user,
+                                    UploadImage $uploadImage,
+                                    SaveImage $saveImageOnUser
+    ): Response
     {
         /* TODO : make voter */
 //        $imageDirectory = $this->getParameter('image_directory');
@@ -25,7 +29,8 @@ class UploadController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-            $uploadImage->saveImageOnUser($user, $form->get('image')->getData());
+            $imageSaved = $uploadImage->saveImageOnServer($user, $form->get('image')->getData());
+            $saveImageOnUser->saveImageOnUser($user, $imageSaved);
         }
 
         return $this->render('user/show.html.twig', [

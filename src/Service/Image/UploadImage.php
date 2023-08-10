@@ -20,15 +20,14 @@ class UploadImage
         $this->slugger = $slugger;
     }
 
-    public function saveImageOnUser(User $user, UploadedFile $file)
+    public function saveImageOnServer(User $user, UploadedFile $file)
     {
-
-        $originalFileName = pathinfo($file->getBasename(), PATHINFO_FILENAME);
+        $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFileName);
         $newFileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
         try {
-            $file->move($this->imageDirectory, $newFileName);
+            $file = $file->move($this->imageDirectory, $newFileName);
         } catch (FileException $e) {
             throw new \Exception("Le fichier n'a pas pus être enregistré.");
         }
@@ -36,8 +35,4 @@ class UploadImage
 
     }
 
-    public function saveImage()
-    {
-
-    }
 }

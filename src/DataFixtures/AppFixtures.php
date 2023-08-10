@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
         $image = new Image();
         $image->setAlt('Image d\'avatar inconnu')
             ->setName('Avatar de inconnu')
-            ->setUrl('/Image/avatar_test.png');
+            ->setUrl('/Image/avatar_test.jpg');
         $manager->persist($image);
 
         $users = [];
