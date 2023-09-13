@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\DeleteConfirmationType;
 use App\Form\RegisterUserType;
 use App\Form\UpdateRoleType;
 use App\Form\UpdateUserForAdminType;
 use App\Form\UpdateUserType;
 use App\Form\UploadImageType;
 use App\Repository\UserRepository;
+use App\Service\User\deleteUser;
 use App\Service\User\RegisterService;
 use App\Service\User\UpdateRoleService;
 use App\Service\User\UpdateService;
@@ -17,6 +19,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\containsEqual;
 
 class UserController extends AbstractController
 {
@@ -136,8 +139,11 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted(('ROLE_ADMIN'));
         $users = $userFinderService->listAll();
 
+        $formDeleteUser = $this->createForm(DeleteConfirmationType::class);
+
         return $this->render('user/list.html.twig', [
-            'users' => $users
+            'users' => $users,
+            'formDeleteUser' =>$formDeleteUser->createView()
         ]);
 
     }
@@ -148,13 +154,35 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $userFinder->findOneUser($user_id);
 
+        $formDeleteUser= $this->createForm(DeleteConfirmationType::class);
         $formImage = $this->createForm(UploadImageType::class);
 
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
-            'formImage' => $formImage
+            'formImage' => $formImage,
+            'formDeleteUser'=> $formDeleteUser
         ]);
+    }
 
+    #[Route('/utilisateur_delete/{user}', name: 'delete_user')]
+    public function deleteUser(Request $request, User $user, deleteUser $deleteUser)
+    {
+        $formDeleteUser= $this->createForm(DeleteConfirmationType::class);
+
+        $formDeleteUser->handleRequest($request);
+
+        dd($user);
+        if ($formDeleteUser->isSubmitted() && $formDeleteUser->isValid()){
+
+            $deleteUser->deleteUser($user);
+
+            if (in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
+                $this->addFlash("info", "Le compte de {$this->getUser()->getUsername()} a bien été supprimé.");
+                $this->redirectToRoute("app_list_user");
+            }
+        }
+        $this->addFlash("info", "Votre compte {$this->getUser()->getUsername()} a bien été supprimé.");
+       return $this->redirectToRoute("home");
     }
 }
