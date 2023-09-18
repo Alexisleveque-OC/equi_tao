@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Supprimer l'utilisateur {{ user.username }}
+{% endblock %}
+
+{% block body %}
+    <div class="offset-1 col-10 text-center">
+        <h4>Etes-vous sur de vouloir supprimer l'utilisateur : {{ user.username }} ?</h4>
+        {{ form_start(form) }}
+        {{ form_row(form.yes) }}
+        <a href="{{ path('app_show_user', {'user_id' : user.id}) }}" class="btn btn-info">Surtout pas !</a>
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}
+

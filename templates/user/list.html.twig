@@ -32,10 +32,8 @@
                             {% endfor %}
                         </a></td>
 
-                    <td><button type="button" class="btn btn-danger" data-toggle="modal"
-                           data-target="#deleteUserConfModal" >X</button>
+                    <td><a href="{{ path('delete_user', {'id': user.id } ) }}" type="button" class="btn btn-danger"  >X</a>
 
-                        {% include 'modal/deleteUserConfModal.html.twig' %}
                     </td>
                 </tr>
             {% endfor %}

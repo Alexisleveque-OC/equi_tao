@@ -9,17 +9,14 @@ use App\Form\UpdateRoleType;
 use App\Form\UpdateUserForAdminType;
 use App\Form\UpdateUserType;
 use App\Form\UploadImageType;
-use App\Repository\UserRepository;
 use App\Service\User\deleteUser;
 use App\Service\User\RegisterService;
 use App\Service\User\UpdateRoleService;
 use App\Service\User\UpdateService;
 use App\Service\User\UserFinderService;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use function PHPUnit\Framework\containsEqual;
 
 class UserController extends AbstractController
 {
@@ -67,15 +64,15 @@ class UserController extends AbstractController
     }
 
     #[Route('/modifier-utilisateur/{user_id}', name: "app_update_user")]
-    public function updateUser(Request         $request,
-                               UpdateService $updateService,
+    public function updateUser(Request           $request,
+                               UpdateService     $updateService,
                                UserFinderService $userFinder,
-                               int $user_id)
+                               int               $user_id)
     {
 
         $user = $userFinder->findOneUser($user_id);
 
-        if (!$user){
+        if (!$user) {
             $this->addFlash('info', "Vous n'avez pas séléctionner d'utilisateur ou celui-ci n'existe pas.");
             return $this->redirectToRoute('home');
         }
@@ -102,15 +99,15 @@ class UserController extends AbstractController
     }
 
     #[Route('/modifier-role/{user_id}', name: "app_update_user_role")]
-    public function updateRole(Request $request,
+    public function updateRole(Request           $request,
                                UpdateRoleService $updateRoleService,
                                UserFinderService $userFinder,
-                               int $user_id)
+                               int               $user_id)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $user = $userFinder->findOneUser($user_id);
 
-        if (!$user){
+        if (!$user) {
             $this->addFlash('info', "Vous n'avez pas séléctionner d'utilisateur ou celui-ci n'existe pas.");
             return $this->redirectToRoute('home');
         }
@@ -119,7 +116,7 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $updateRoleService->updateRole($form->getData());
             $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été modifié.");
             return $this->redirectToRoute('app_list_user');
@@ -130,7 +127,7 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
 
-    } 
+    }
 
 
     #[Route('/list-user', name: "app_list_user")]
@@ -143,7 +140,7 @@ class UserController extends AbstractController
 
         return $this->render('user/list.html.twig', [
             'users' => $users,
-            'formDeleteUser' =>$formDeleteUser->createView()
+            'formDeleteUser' => $formDeleteUser->createView()
         ]);
 
     }
@@ -154,35 +151,43 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $userFinder->findOneUser($user_id);
 
-        $formDeleteUser= $this->createForm(DeleteConfirmationType::class);
+        $formDeleteUser = $this->createForm(DeleteConfirmationType::class);
         $formImage = $this->createForm(UploadImageType::class);
 
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'formImage' => $formImage,
-            'formDeleteUser'=> $formDeleteUser
+            'formDeleteUser' => $formDeleteUser
         ]);
     }
 
-    #[Route('/utilisateur_delete/{user}', name: 'delete_user')]
+    #[Route('/utilisateur_delete/{id}', name: 'delete_user')]
     public function deleteUser(Request $request, User $user, deleteUser $deleteUser)
     {
-        $formDeleteUser= $this->createForm(DeleteConfirmationType::class);
+        if ($this->getUser() !== $user) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
 
-        $formDeleteUser->handleRequest($request);
+        $form = $this->createForm(DeleteConfirmationType::class);
+        $form->handleRequest($request);
 
-        dd($user);
-        if ($formDeleteUser->isSubmitted() && $formDeleteUser->isValid()){
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $deleteUser->deleteUser($user);
 
-            if (in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
-                $this->addFlash("info", "Le compte de {$this->getUser()->getUsername()} a bien été supprimé.");
-                $this->redirectToRoute("app_list_user");
+            if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+                $this->addFlash("info", "Le compte de {$user->getUsername()} a bien été supprimé.");
+                return $this->redirectToRoute("app_list_user");
             }
+
+            $this->addFlash("info", "Votre compte a bien été supprimé.");
+            return $this->redirectToRoute("home");
         }
-        $this->addFlash("info", "Votre compte {$this->getUser()->getUsername()} a bien été supprimé.");
-       return $this->redirectToRoute("home");
+
+        return $this->render('user/delete.html.twig', [
+            'form' => $form,
+            'user' => $user,
+        ]);
     }
+
 }

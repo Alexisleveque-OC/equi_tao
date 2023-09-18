@@ -38,18 +38,25 @@
                         <li class="col-4">Mes derniers commentaires</li>
                         <li class="col-4">Mes derniers commentaires</li>
                     </ul>
-                    {% if app.user == user %}
+                    {% if ( app.user == user or 'ROLE_ADMIN' in app.user.roles )%}
                         <div class="row">
                             <a class="btn btn-primary col-5"
                                href="{{ path('app_update_user',{'user_id' : user.id}) }}">
+                                {% if 'ROLE_ADMIN' in app.user.roles %}
+                                Modifier ce profil
+                                {% else %}
                                 Modifier mon profil
+                                {% endif %}
                             </a>
-                            <button type="button" class="btn btn-danger col-5 offset-1" data-toggle="modal"
-                                    data-target="#deleteUserConfModal">
-                                Supprimer mon profil !
-                            </button>
+                            <a href="{{ path('delete_user', {'id' : user.id}) }}" type="button" class="btn btn-danger col-5 offset-1" >
+                                {% if 'ROLE_ADMIN' in app.user.roles %}
+                                    Supprimer ce profil !
+                                {% else %}
+                                    Supprimer mon profil !
+                                {% endif %}
+
+                            </a>
                         </div>
-                        {% include 'modal/deleteUserConfModal.html.twig' %}
                     {% endif %}
                 </div>
             </div>

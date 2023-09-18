@@ -16,14 +16,7 @@ class DeleteConfirmationType extends AbstractType
                 'label' => 'Oui !',
                 'attr' => [
                     'class' => 'btn btn-danger',
-                ]])
-            ->add('no', ButtonType::class, [
-                'label' => 'Non !',
-                'attr' => [
-                    'class' => 'btn btn-info',
-                    'data-dismiss' => 'modal',
-                    'arial-label' => 'Close'
-                ]
-            ]);
+                ]]
+            );
     }
 }
