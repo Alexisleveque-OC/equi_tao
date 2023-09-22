@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\CreateUserForAdminType;
 use App\Form\DeleteConfirmationType;
+use App\Form\DeleteConfType;
 use App\Form\RegisterUserType;
 use App\Form\UpdateRoleType;
 use App\Form\UpdateUserForAdminType;
@@ -41,16 +43,33 @@ class UserController extends AbstractController
     }
 
     #[Route('/creer-utlisateur', name: "app_create_user")]
+    #[Route('/modif-utlisateur/{user}', name: "app_update_user")]
     public function createUser(Request         $request,
-                               RegisterService $registerService)
+                               RegisterService $registerService,
+                               User            $user = null)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $form = $this->createForm(UpdateUserForAdminType::class);
+        $isGranted = true;
+        if ($user !== $this->getUser()) {
+            if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+                $isGranted = false;
+            }
+        }
+        if (!$isGranted) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $editMode = false;
+        if ($user) {
+            $editMode = true;
+        }
+
+        $form = $this->createForm(CreateUserForAdminType::class, $user, [
+            'withRoleSelector' => $this->isGranted('ROLE_ADMIN')
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $registerService->register($form->getData());
 
             $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été crée.");
@@ -59,76 +78,10 @@ class UserController extends AbstractController
 
 
         return $this->render('user/create.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'editMode' => $editMode
         ]);
     }
-
-    #[Route('/modifier-utilisateur/{user_id}', name: "app_update_user")]
-    public function updateUser(Request           $request,
-                               UpdateService     $updateService,
-                               UserFinderService $userFinder,
-                               int               $user_id)
-    {
-
-        $user = $userFinder->findOneUser($user_id);
-
-        if (!$user) {
-            $this->addFlash('info', "Vous n'avez pas séléctionner d'utilisateur ou celui-ci n'existe pas.");
-            return $this->redirectToRoute('home');
-        }
-
-        if ($user !== $this->getUser()) {
-            throw $this->createAccessDeniedException();
-        }
-
-        $form = $this->createForm(UpdateUserType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $updateService->update($form->getData(), $user);
-
-            $this->addFlash('success', 'Votre compte à bien été modifié.');
-            return $this->redirectToRoute('home');
-        }
-
-
-        return $this->render('user/update.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
-
-    #[Route('/modifier-role/{user_id}', name: "app_update_user_role")]
-    public function updateRole(Request           $request,
-                               UpdateRoleService $updateRoleService,
-                               UserFinderService $userFinder,
-                               int               $user_id)
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $user = $userFinder->findOneUser($user_id);
-
-        if (!$user) {
-            $this->addFlash('info', "Vous n'avez pas séléctionner d'utilisateur ou celui-ci n'existe pas.");
-            return $this->redirectToRoute('home');
-        }
-
-        $form = $this->createForm(UpdateRoleType::class, $user);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $updateRoleService->updateRole($form->getData());
-            $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été modifié.");
-            return $this->redirectToRoute('app_list_user');
-        }
-
-        return $this->render('user/update_role.html.twig', [
-            'form' => $form,
-            'user' => $user,
-        ]);
-
-    }
-
 
     #[Route('/list-user', name: "app_list_user")]
     public function listUser(UserFinderService $userFinderService)
@@ -136,7 +89,7 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted(('ROLE_ADMIN'));
         $users = $userFinderService->listAll();
 
-        $formDeleteUser = $this->createForm(DeleteConfirmationType::class);
+        $formDeleteUser = $this->createForm(DeleteConfType::class);
 
         return $this->render('user/list.html.twig', [
             'users' => $users,
@@ -151,14 +104,14 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $userFinder->findOneUser($user_id);
 
-        $formDeleteUser = $this->createForm(DeleteConfirmationType::class);
+        $formDeleteUser = $this->createForm(DeleteConfType::class);
         $formImage = $this->createForm(UploadImageType::class);
 
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
-            'formImage' => $formImage,
-            'formDeleteUser' => $formDeleteUser
+            'formImage' => $formImage->createView(),
+            'formDeleteUser' => $formDeleteUser->createView()
         ]);
     }
 
@@ -169,7 +122,7 @@ class UserController extends AbstractController
             $this->denyAccessUnlessGranted('ROLE_ADMIN');
         }
 
-        $form = $this->createForm(DeleteConfirmationType::class);
+        $form = $this->createForm(DeleteConfType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -185,7 +138,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/delete.html.twig', [
-            'form' => $form,
+            'form' => $form->createView(),
             'user' => $user,
         ]);
     }

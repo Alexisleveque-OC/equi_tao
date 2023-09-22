@@ -26,7 +26,7 @@
                     </th>
                     <td>{{ user.email }}  </td>
                     <td>{{ user.creationDate|date("d/m/Y h:s") }}</td>
-                    <td><a href="{{ path('app_update_user_role', {'user_id':user.id}) }}">
+                    <td><a href="{{ path('app_update_user', {'user':user.id}) }}">
                             {% for role in user.roles %}
                             {{ role }}
                             {% endfor %}

@@ -7,7 +7,13 @@
     <div class="container">
         <a class="offset-2 col-8 text-center oi oi-account-login icon-form"></a>
 
-        <h1 class="update_user">Créer un nouvel utilisateur</h1>
+        <h1 class="update_user">
+            {% if editMode %}
+                Modifier un nouvel utilisateur
+            {% else %}
+                Créer un nouvel utilisateur
+            {% endif %}
+        </h1>
         <div class="offset-2 col-8 form_login">
 
             {{ form_start(form
@@ -15,7 +21,9 @@
 
             {{ form_row(form.username, {'label':"Nom d'utilisateur",'attr':{'placeholder':"Nom d'utilisateur"}}) }}
             {{ form_row(form.email, {'label':"Email d'utilisateur",'attr':{'placeholder':"Email d'utilisateur"}}) }}
-            {{ form_row(form.roles, {'label':"Role de l'utilisateur"}) }}
+            {% if is_granted('ROLE_ADMIN') %}
+                {{ form_row(form.roles, {'label':"Role de l'utilisateur"}) }}
+            {% endif %}
             {{ form_row(form.password, {'label' : 'Mot de passe'}) }}
 
             <button id="submitFormsButton"

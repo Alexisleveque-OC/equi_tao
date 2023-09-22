@@ -38,17 +38,18 @@
                         <li class="col-4">Mes derniers commentaires</li>
                         <li class="col-4">Mes derniers commentaires</li>
                     </ul>
-                    {% if ( app.user == user or 'ROLE_ADMIN' in app.user.roles )%}
+                    {% if ( app.user == user or 'ROLE_ADMIN' in app.user.roles ) %}
                         <div class="row">
                             <a class="btn btn-primary col-5"
-                               href="{{ path('app_update_user',{'user_id' : user.id}) }}">
+                               href="{{ path('app_update_user',{'user' : user.id}) }}">
                                 {% if 'ROLE_ADMIN' in app.user.roles %}
-                                Modifier ce profil
+                                    Modifier ce profil
                                 {% else %}
-                                Modifier mon profil
+                                    Modifier mon profil
                                 {% endif %}
                             </a>
-                            <a href="{{ path('delete_user', {'id' : user.id}) }}" type="button" class="btn btn-danger col-5 offset-1" >
+                            <a href="{{ path('delete_user', {'id' : user.id}) }}" type="button"
+                               class="btn btn-danger col-5 offset-1">
                                 {% if 'ROLE_ADMIN' in app.user.roles %}
                                     Supprimer ce profil !
                                 {% else %}
@@ -65,5 +66,5 @@
 
 {% endblock %}
 {% block javascripts %}
-{{ parent() }}
+    {{ parent() }}
 {% endblock %}
