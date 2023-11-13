@@ -25,9 +25,7 @@ class UpdateService
     public function update(array $data, User $user)
 
     {
-        if($data['password_old'] && $this->passwordHasher->isPasswordValid($user, $data['password_old'])){
-            $user->setPassword($this->passwordHasher->hashPassword($user, $data['password_new']));
-        }
+//
         $user->setUsername($data['username'])
             ->setEmail($data['email']);
 

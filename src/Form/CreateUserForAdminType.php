@@ -22,16 +22,16 @@ class CreateUserForAdminType extends AbstractType
                 'constraints' => new NotBlank(),
             ])
             ->add('username')
-            ->add('password', TextType::class, [
-                'password' => ['label' => 'Mot de passe actuel'],
-                'required' => false
-            ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => 'Nouveau mot de passe', 'attr' => ['placeholder' => 'Nouveau mot de passe']],
-                'second_options' => ['label' => 'Confirmation du nouveau mot de passe', 'attr' => ['placeholder' => 'Confirmation du nouveau mot de passe']],
-                'required' => false]
-            );
+//            ->add('password', TextType::class, [
+//                'password' => ['label' => 'Mot de passe actuel'],
+//                'required' => false
+//            ])
+//            ->add('password', RepeatedType::class, [
+//                'type' => PasswordType::class,
+//                'first_options' => ['label' => 'Nouveau mot de passe', 'attr' => ['placeholder' => 'Nouveau mot de passe']],
+//                'second_options' => ['label' => 'Confirmation du nouveau mot de passe', 'attr' => ['placeholder' => 'Confirmation du nouveau mot de passe']],
+//                'required' => false])
+            ;
         if ($options['withRoleSelector']) {
             $builder
                 ->add('roles', ChoiceType::class, [

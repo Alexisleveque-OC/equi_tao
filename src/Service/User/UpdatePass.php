@@ -6,7 +6,7 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class RegisterService
+class UpdatePass
 {
     public EntityManagerInterface $manager;
     /**
@@ -20,29 +20,19 @@ class RegisterService
         $this->passwordHasher = $passwordHasher;
     }
 
-    public function register(User $user, bool $editMode = null)
-
+    public function changePassword(mixed $data,User $user, $isAdmin = false )
     {
-        if (!$user->getRoles()) {
-            $user->setRoles(['ROLE_USER']);
+        if ($isAdmin){
+            $user->setPassword($this->passwordHasher->hashPassword($user, $data['password_new']));
+            $this->manager->persist($user);
+            $this->manager->flush();
+            return;
         }
-
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
-            $user->setRoles(['ROLE_ADMIN']);
+        dd($this->passwordHasher->isPasswordValid($user, $data['password_old']),$user, $data);
+        if($data['password_old'] && $this->passwordHasher->isPasswordValid($user, $data['password_old'])){
+            $user->setPassword($this->passwordHasher->hashPassword($user, $data['password_new']));
         }
-
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
-
-        $user->setUsername($user->getUsername())
-            ->setEmail($user->getEmail());
-
-        if (!$editMode) {
-            $user->setCreationDate(new \DateTimeImmutable())
-                ->setPassword($hashedPassword);
-        }
-
         $this->manager->persist($user);
         $this->manager->flush();
-
     }
 }

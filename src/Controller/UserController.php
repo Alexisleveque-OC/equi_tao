@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 use App\Form\CreateUserForAdminType;
 use App\Form\DeleteConfirmationType;
 use App\Form\DeleteConfType;
@@ -13,6 +14,7 @@ use App\Form\UpdateUserType;
 use App\Form\UploadImageType;
 use App\Service\User\deleteUser;
 use App\Service\User\RegisterService;
+use App\Service\User\UpdatePass;
 use App\Service\User\UpdateRoleService;
 use App\Service\User\UpdateService;
 use App\Service\User\UserFinderService;
@@ -46,6 +48,7 @@ class UserController extends AbstractController
     #[Route('/modif-utlisateur/{user}', name: "app_update_user")]
     public function createUser(Request         $request,
                                RegisterService $registerService,
+                               UpdateService   $updateService,
                                User            $user = null)
     {
         $isGranted = true;
@@ -70,8 +73,15 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $registerService->register($form->getData());
+//            if ($editMode){
+//                $updateService->update($form->getData(), $user);
+//            }
+            $registerService->register($form->getData(), $editMode);
 
+            if ($editMode) {
+                $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été modifié.");
+                return $this->redirectToRoute('app_list_user');
+            }
             $this->addFlash('success', 'Le compte de ' . $form->getData()->getUserName() . " à bien été crée.");
             return $this->redirectToRoute('app_list_user');
         }
@@ -79,8 +89,37 @@ class UserController extends AbstractController
 
         return $this->render('user/create.html.twig', [
             'form' => $form->createView(),
-            'editMode' => $editMode
+            'editMode' => $editMode,
+            'user' => $user
         ]);
+    }
+
+    #[Route('/change-pass/{user}', name: "app_change_pass_user")]
+    public function changePassword(Request $request, User $user, UpdatePass $updatePass)
+    {
+        $isAdmin = false;
+        if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            $isAdmin = true;
+        }
+        $form = $this->createForm(ChangePasswordType::class, null, [
+            'byAdmin' => $isAdmin
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $updatePass->changePassword($form->getData(), $user, $isAdmin);
+
+            $this->addFlash('success', 'Le mot de passe a bien été modifié.');
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('user/changePassword.html.twig', [
+            'form' => $form->createView(),
+            'isAdmin' => $isAdmin,
+            'user' => $user
+        ]);
+
     }
 
     #[Route('/list-user', name: "app_list_user")]

@@ -9,7 +9,7 @@
 
         <h1 class="update_user">
             {% if editMode %}
-                Modifier un nouvel utilisateur
+                Modifier un utilisateur
             {% else %}
                 Créer un nouvel utilisateur
             {% endif %}
@@ -24,12 +24,13 @@
             {% if is_granted('ROLE_ADMIN') %}
                 {{ form_row(form.roles, {'label':"Role de l'utilisateur"}) }}
             {% endif %}
-            {{ form_row(form.password, {'label' : 'Mot de passe'}) }}
 
             <button id="submitFormsButton"
                     class="btn btn-outline-success offset-xs-3 col-xs-6 offset-sm-4 col-sm-4 text-center">Créer/modifier
                 l'utilisateur
             </button>
+            <a href="{{ path('app_change_pass_user', {'user' : user.id }) }}" class="btn btn-outline-info offset-xs-3 col-xs-6 offset-sm-4 col-sm-4 text-center">Modifier le mot de passe
+            </a>
 
             {{ form_end(form) }}
 
