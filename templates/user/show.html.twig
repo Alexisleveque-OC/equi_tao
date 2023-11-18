@@ -4,62 +4,60 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="card border-primary col-4">
-                <h4 class="card-header text-center">Photo de profil</h4>
-                <div class="card-body">
-                    <p class="card-text">
-                        {% if user.image is null %}
-                            <img class="avatar_profil" src="{{ asset('Image/avatar.png') }}"
-                                 alt="avatar d'utilisateur non défini">
-                        {% else %}
-                            <img class="avatar_profil" src="{{ user.image.url }}"
-                                 alt="Photo de l'utilisateur {{ user.username }}">
-                        {% endif %}
-                        {% if app.user == user %}
-                        {{ form_start(formImage, {'action':path('upload_image_user', {'user': user.id})}) }}
-                        {{ form_row(formImage.image) }}
-                    <div class="text-center">
-                        <button class="btn btn-success">Changer mon image de profil</button>
-                    </div>
-                    {{ form_end(formImage) }}
+    <div class="row">
+        <div class="card border-primary col-4">
+            <h4 class="card-header text-center">Photo de profil</h4>
+            <div class="card-body">
+                <p class="card-text">
+                    {% if user.image is null %}
+                        <img class="avatar_profil" src="{{ asset('Image/avatar.png') }}"
+                             alt="avatar d'utilisateur non défini">
+                    {% else %}
+                        <img class="avatar_profil" src="{{ user.image.url }}"
+                             alt="Photo de l'utilisateur {{ user.username }}">
                     {% endif %}
-                    </p>
+                    {% if app.user == user %}
+                    {{ form_start(formImage, {'action':path('upload_image_user', {'user': user.id})}) }}
+                    {{ form_row(formImage.image) }}
+                <div class="text-center">
+                    <button class="btn btn-success">Changer mon image de profil</button>
                 </div>
+                {{ form_end(formImage) }}
+                {% endif %}
+                </p>
             </div>
-            <div class="card border-primary offset-1 col-7">
-                <h4 class="card-header">Nom d'utilisateur : {{ user.username }}</h4>
-                <div class="card-body">
-                    <h4 class="card-title">Mon profil</h4>
-                    <p class="card-text">Mon email : {{ user.email }}</p>
-                    <ul class="row">
-                        <li class="col-4">Mes derniers commentaires</li>
-                        <li class="col-4">Mes derniers commentaires</li>
-                        <li class="col-4">Mes derniers commentaires</li>
-                    </ul>
-                    {% if ( app.user == user or 'ROLE_ADMIN' in app.user.roles ) %}
-                        <div class="row">
-                            <a class="btn btn-primary col-5"
-                               href="{{ path('app_update_user',{'user' : user.id}) }}">
-                                {% if 'ROLE_ADMIN' in app.user.roles %}
-                                    Modifier ce profil
-                                {% else %}
-                                    Modifier mon profil
-                                {% endif %}
-                            </a>
-                            <a href="{{ path('delete_user', {'id' : user.id}) }}" type="button"
-                               class="btn btn-danger col-5 offset-1">
-                                {% if 'ROLE_ADMIN' in app.user.roles %}
-                                    Supprimer ce profil !
-                                {% else %}
-                                    Supprimer mon profil !
-                                {% endif %}
+        </div>
+        <div class="card border-primary offset-1 col-7">
+            <h4 class="card-header">Nom d'utilisateur : {{ user.username }}</h4>
+            <div class="card-body">
+                <h4 class="card-title">Mon profil</h4>
+                <p class="card-text">Mon email : {{ user.email }}</p>
+                <ul class="row">
+                    <li class="col-4">Mes derniers commentaires</li>
+                    <li class="col-4">Mes derniers commentaires</li>
+                    <li class="col-4">Mes derniers commentaires</li>
+                </ul>
+                {% if ( app.user == user or 'ROLE_ADMIN' in app.user.roles ) %}
+                    <div class="row">
+                        <a class="btn btn-primary col-5"
+                           href="{{ path('app_update_user',{'user' : user.id}) }}">
+                            {% if 'ROLE_ADMIN' in app.user.roles %}
+                                Modifier ce profil
+                            {% else %}
+                                Modifier mon profil
+                            {% endif %}
+                        </a>
+                        <a href="{{ path('delete_user', {'id' : user.id}) }}" type="button"
+                           class="btn btn-danger col-5 offset-1">
+                            {% if 'ROLE_ADMIN' in app.user.roles %}
+                                Supprimer ce profil !
+                            {% else %}
+                                Supprimer mon profil !
+                            {% endif %}
 
-                            </a>
-                        </div>
-                    {% endif %}
-                </div>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
