@@ -19,6 +19,7 @@ use App\Service\User\UpdateRoleService;
 use App\Service\User\UpdateService;
 use App\Service\User\UserFinderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -151,7 +152,7 @@ class UserController extends AbstractController
 	}
 
 	#[Route('/utilisateur_delete/{id}', name: 'delete_user')]
-	public function deleteUser(Request $request, User $user, deleteUser $deleteUser) {
+	public function deleteUser(Request $request, User $user, deleteUser $deleteUser, Security $security) {
 		if ($this->getUser() !== $user) {
 			$this->denyAccessUnlessGranted('ROLE_ADMIN');
 		}
@@ -160,9 +161,13 @@ class UserController extends AbstractController
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
+
+			if ($this->getUser() === $user) {
+				$security->logout(false);
+			}
 			$deleteUser->deleteUser($user);
 
-			if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+			if ($this->getUser() !== null && in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
 				$this->addFlash("info", "Le compte de {$user->getUsername()} a bien été supprimé.");
 				return $this->redirectToRoute("app_list_user");
 			}
