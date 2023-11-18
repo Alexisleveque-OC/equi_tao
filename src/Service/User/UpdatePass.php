@@ -28,10 +28,11 @@ class UpdatePass
             $this->manager->flush();
             return;
         }
-        dd($this->passwordHasher->isPasswordValid($user, $data['password_old']),$user, $data);
+
         if($data['password_old'] && $this->passwordHasher->isPasswordValid($user, $data['password_old'])){
             $user->setPassword($this->passwordHasher->hashPassword($user, $data['password_new']));
         }
+
         $this->manager->persist($user);
         $this->manager->flush();
     }

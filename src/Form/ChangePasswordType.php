@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\User;
+use App\Validator\OldPasswordMatch;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -23,7 +25,8 @@ class ChangePasswordType extends AbstractType
         if (!$options['byAdmin']) {
             $builder->add('password_old', PasswordType::class, [
                     'label' => 'Mot de passe actuel',
-                    'required' => true
+                    'required' => true,
+					'constraints' => [new OldPasswordMatch($options['user'])]
                 ]
             );
         }
@@ -33,7 +36,8 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
-        $resolver->setRequired('byAdmin');
+        $resolver->setRequired(['byAdmin', 'user']);
         $resolver->setAllowedTypes('byAdmin', 'boolean');
+        $resolver->setAllowedTypes('user', User::class);
     }
 }

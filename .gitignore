@@ -10,6 +10,10 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+###> phpstorm ###
+/.idea
+###< phpunit/phpunit ###
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
