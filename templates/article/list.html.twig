@@ -21,6 +21,14 @@
                 <div class="card-body">
                     <p class="card-text">{{ article.content }}</p>
                 </div>
+                <div class="card-body">
+                    <a href="{{ path('app_article.show',
+                        {'id': article.id,
+                            'article_category_slug' : article.category.slug,
+                            'article_slug' : article.slug,
+                        }
+                    ) }}" class="card-link">Voir l'article</a>
+                </div>
                 {% if article.lastUpdateDate is not null %}
                     <div class="card-footer text-muted">
                         dernière mise à jour: {{ article.lastUpdateDate|date("d/m/YY H:i") }}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Service\Article\ArticleFinder;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-#[Route(path: '/article', name: 'app_article.')]
+#[Route(path: '/articles', name: 'app_article.')]
 class ArticleController extends AbstractController
 {
 
@@ -33,6 +34,15 @@ class ArticleController extends AbstractController
 
 		return $this->render('article/list.html.twig', [
 			'articles' => $articles
+		]);
+	}
+
+	#[Route('/{article_category_slug}/{id<\d+>}-{article_slug}', name: 'show')]
+	public function show( Article $article): Response
+	{
+		dump($article);
+		return $this->render('article/show.html.twig', [
+			'article' => $article
 		]);
 	}
 }

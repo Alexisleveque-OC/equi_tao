@@ -48,6 +48,9 @@ class Article
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Image::class)]
     private Collection $images;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -55,7 +58,7 @@ class Article
         $this->images = new ArrayCollection();
     }
 
-    public function get(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -230,6 +233,18 @@ class Article
                 $image->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

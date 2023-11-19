@@ -10,6 +10,8 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AppFixtures extends Fixture
 {
@@ -17,6 +19,9 @@ class AppFixtures extends Fixture
 	* @var UserPasswordHasherInterface
 	*/
 	private $hasher;
+
+	#[Required]
+	public SluggerInterface $slugger;
 
 	public function __construct(UserPasswordHasherInterface $hasher) {
 		$this->hasher = $hasher;
@@ -72,7 +77,8 @@ class AppFixtures extends Fixture
 		for ($i = 0; $i < 3; $i++) {
 			$categories = [];
 			$category = new ArticleCategory();
-			$category->setName(sprintf("Categorie n°%d", $i));
+			$category->setName(sprintf("Categorie n°%d", $i))
+				->setSlug($this->slugger->slug(sprintf("Categorie n°%d", $i)));
 
 			$manager->persist($category);
 
@@ -81,11 +87,15 @@ class AppFixtures extends Fixture
 			for ($j = 0; $j < 5; $j++) {
 				$articles = [];
 				$article = new Article();
-				$article->setTitle(sprintf("Titre de l'article %d", (($j + 1) + ($i*5))))
+				$article->setTitle(sprintf("Titre de l'article %d", (($j + 1) + ($i * 5))))
 					->setContent($faker->text())
 					->setUser($users[0])
 					->setCreationDate(new \DateTime())
 					->setCategory($category);
+
+				$slug = $this->slugger->slug($article->getTitle());
+
+				$article->setSlug($slug);
 
 				$manager->persist($article);
 
