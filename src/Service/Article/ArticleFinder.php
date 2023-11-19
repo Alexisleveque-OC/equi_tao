@@ -14,4 +14,8 @@ class ArticleFinder
 		return $this->articleRepository->findAll();
 	}
 
+	public function findLastArticles($max = 3) {
+		return $this->articleRepository->findLastArticles($max);
+	}
+
 }

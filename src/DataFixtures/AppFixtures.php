@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
 			for ($j = 0; $j < 5; $j++) {
 				$articles = [];
 				$article = new Article();
-				$article->setTitle(sprintf("Titre de l'article %d", $j))
+				$article->setTitle(sprintf("Titre de l'article %d", (($j + 1) + ($i*5))))
 					->setContent($faker->text())
 					->setUser($users[0])
 					->setCreationDate(new \DateTime())
