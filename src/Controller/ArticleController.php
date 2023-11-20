@@ -7,7 +7,9 @@ use App\Form\ArticleCategoryType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Service\Article\ArticleFinder;
+use App\Service\Article\ArticleUpdaterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -16,14 +18,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
 
-    #[Route('/create', name: 'create')]
-    public function create(): Response
+	/**
+	 * @throws \Exception
+	 */
+	#[Route('/create', name: 'create')]
+    public function create(Request $request, ArticleUpdaterService $articleUpdaterService): Response
     {
 		$editMode = false;
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 		$formArticle = $this->createForm(ArticleType::class);
 		$formCategory = $this->createForm(ArticleCategoryType::class);
+		$formArticle->handleRequest($request);
+
+		if ($formArticle->isSubmitted() && $formArticle->isValid()){
+			$files = $request->files->all();
+
+			$article = $articleUpdaterService->create($formArticle->getData(), $this->getUser(), $files);
+
+			return $this->render('article/show.html.twig',[
+				'article' => $article
+			]);
+		}
 
         return $this->render('article/create.html.twig', [
 			'formArticle' => $formArticle->createView(),

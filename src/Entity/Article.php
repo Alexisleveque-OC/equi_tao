@@ -28,9 +28,6 @@ class Article
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastUpdateDate = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageUrl = null;
-
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -106,18 +103,6 @@ class Article
     public function setLastUpdateDate(?\DateTimeInterface $lastUpdateDate): self
     {
         $this->lastUpdateDate = $lastUpdateDate;
-
-        return $this;
-    }
-
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    public function setImageUrl(?string $imageUrl): self
-    {
-        $this->imageUrl = $imageUrl;
 
         return $this;
     }

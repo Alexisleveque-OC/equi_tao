@@ -49,6 +49,7 @@ class ArticleType extends AbstractType
 				'allow_add' => true,
 				'by_reference' => false,
 				'allow_delete' => true,
+				'mapped' => false,
 				'entry_options' => [
 					'label' => false,
 					'required' => false,

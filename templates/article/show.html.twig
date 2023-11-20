@@ -18,7 +18,7 @@
             <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
         </svg>
         <div class="card-body">
-            <p class="card-text">{{ article.content }}</p>
+            <p class="card-text">{{ article.content | raw}}</p>
         </div>
         {% if article.lastUpdateDate is not null %}
             <div class="card-footer text-muted">

@@ -53,13 +53,18 @@
             <ul class="images"
                 data-prototype="{{ form_widget(formArticle.images.vars.prototype)|e('html_attr') }}"
                 data-index="{{ formArticle.images|length }}">
-                {% for image in formArticle.images %}
-                    <li class="fieldImage">
-                        <img src="{{ asset(image.vars.value.url) }}"
-                             alt="{{ asset(image.vars.value.fileName) }}">
-                        {{ form_row(image) }}
-                    </li>
-                {% endfor %}
+{#                {% if formArticle.images|length == 0 %}#}
+                    {{ form_label(formArticle.images) }}
+{#                {% else %}#}
+{#                    {% for image in formArticle.images %}#}
+{#                        <li class="fieldImage">#}
+{#                            <img src="{{ asset(image.vars.value.url) }}"#}
+{#                                 alt="{{ asset(image.vars.value.fileName) }}">#}
+{#                            {{ form_row(image) }}#}
+
+{#                        </li>#}
+{#                    {% endfor %}#}
+{#                {% endif %}#}
             </ul>
         </div>
     </div>
