@@ -5,20 +5,15 @@ namespace App\Service\User;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class RegisterService
 {
+	#[Required]
     public EntityManagerInterface $manager;
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    public UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(EntityManagerInterface $manager, UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->manager = $manager;
-        $this->passwordHasher = $passwordHasher;
-    }
+    #[Required]
+    public UserPasswordHasherInterface $passwordHasher;
 
     public function register(User $user, bool $editMode = null)
 

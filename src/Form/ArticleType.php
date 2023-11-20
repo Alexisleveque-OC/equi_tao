@@ -35,7 +35,7 @@ class ArticleType extends AbstractType
 			->add('category', EntityType::class, [
 				'class' => ArticleCategory::class,
 				'choice_label' => 'name',
-				'constraints' => NotBlank::class
+				'constraints' => new NotBlank()
 			]);
 	}
 

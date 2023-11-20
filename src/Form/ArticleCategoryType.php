@@ -15,6 +15,10 @@ class ArticleCategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class,[
+				'label' => 'Nom de la nouvelle catégorie',
+				'attr' => [
+					'placeholder' => "Nom de la nouvelle catégorie"
+				],
 				'constraints' => new NotBlank()
 			])
         ;

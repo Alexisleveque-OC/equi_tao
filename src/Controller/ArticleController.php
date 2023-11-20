@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Form\ArticleCategoryType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Service\Article\ArticleFinder;
@@ -18,12 +19,16 @@ class ArticleController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(): Response
     {
+		$editMode = false;
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-		$form = $this->createForm(ArticleType::class);
+		$formArticle = $this->createForm(ArticleType::class);
+		$formCategory = $this->createForm(ArticleCategoryType::class);
 
         return $this->render('article/create.html.twig', [
-			'formArticle' => $form->createView()
+			'formArticle' => $formArticle->createView(),
+			'formCategory' => $formCategory->createView(),
+			'editMode' => $editMode,
         ]);
     }
 

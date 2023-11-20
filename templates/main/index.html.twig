@@ -24,6 +24,11 @@
 
     <h3>Les dernières actualités</h3>
     <div class="row">
+        {% if app.user and is_granted('ROLE_ADMIN') %}
+            <div class="row">
+                <a class="btn btn-primary col-4" href="{{ path('app_article.create') }}">Créer un article</a>
+            </div>
+        {% endif %}
         {% for article in articles %}
             <div class="col-4">
                 <div class="card ">
