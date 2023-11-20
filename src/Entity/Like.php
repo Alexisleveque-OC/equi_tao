@@ -20,7 +20,7 @@ class Like
 
     #[ORM\ManyToOne(inversedBy: 'likes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Article $artcile = null;
+    private ?Article $article = null;
 
     public function get(): ?int
     {
@@ -44,9 +44,9 @@ class Like
         return $this->artcile;
     }
 
-    public function setArtcile(?Article $artcile): self
+    public function setArtcile(?Article $article): self
     {
-        $this->artcile = $artcile;
+        $this->artcile = $article;
 
         return $this;
     }

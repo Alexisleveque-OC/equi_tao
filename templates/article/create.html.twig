@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-Création d'un article
+    Création d'un article
 {% endblock %}
 {% block body %}
     {% if editMode %}
@@ -29,13 +29,63 @@ Création d'un article
             </div>
         </div>
     </div>
-{{ form_start(formArticle) }}
-    <div class="col-xs-12 col-lg-2">
-        <a class="btn btn-outline-success" role="button" data-toggle="modal"
-           data-target="#createCategoryModal"> Créer une nouvelle catégorie
-        </a>
+    {{ form_start(formArticle) }}
+    <div class="row">
+        <div class="col-xs-12 col-lg-10">
+            {{ form_row(formArticle.category) }}
+        </div>
+        <div class="col-xs-12 col-lg-2">
+            <a class="btn btn-outline-success" role="button" data-toggle="modal"
+               data-target="#createCategoryModal"> Créer une nouvelle catégorie
+            </a>
+        </div>
     </div>
-{{ form_end(formArticle) }}
+    <div class="row">
+        {{ form_row(formArticle.title) }}
+    </div>
+    <div class="row">
+        {{ form_row(formArticle.content) }}
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            {{ form_label(formArticle.images) }}
+            <p>La première image dans ce formulaire sera l'image principale.</p>
+            <ul class="images"
+                data-prototype="{{ form_widget(formArticle.images.vars.prototype)|e('html_attr') }}"
+                data-index="{{ formArticle.images|length }}">
+                {% for image in formArticle.images %}
+                    <li class="fieldImage">
+                        <img src="{{ asset(image.vars.value.url) }}"
+                             alt="{{ asset(image.vars.value.fileName) }}">
+                        {{ form_row(image) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <button type="submit" class="offset-3 col-3 btn btn-success ">
+            {% if editMode %}
+                Modifier l'article
+            {% else %}
+                Créer l'article
+            {% endif %}
+        </button>
+        {#        {% if editMode %} #}
+        {#            <button type="button" #}
+        {#                    class="btn btn-danger col-3" data-toggle="modal" #}
+        {#                    data-target="#deleteTrickConfModal"> #}
+        {#                Supprimer le trick #}
+        {#            </button> #}
+        {#        {% endif %} #}
+    </div>
+    {{ form_end(formArticle) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/tinymce/ext/tinymce-webcomponent.js') }}" type="module"></script>
+    <script src="{{ asset('JS/initiateCollection.js') }}"></script>
 {% endblock %}
 
 

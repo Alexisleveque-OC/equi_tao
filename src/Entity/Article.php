@@ -36,13 +36,12 @@ class Article
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?ArticleCategory $category = null;
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
-    #[ORM\OneToMany(mappedBy: 'artcile', targetEntity: Like::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Like::class, orphanRemoval: true)]
     private Collection $likes;
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: Image::class)]

@@ -4,9 +4,12 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
+use Eckinox\TinymceBundle\Form\Type\TinymceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +28,7 @@ class ArticleType extends AbstractType
 				],
 				'constraints' => new NotNull()
 			])
-			->add('content', TextType::class, [
+			->add('content', TinymceType::class, [
 				'label' => "Contenu:",
 				'attr' => [
 					'placeholder' => "Contenu:",
@@ -34,10 +37,24 @@ class ArticleType extends AbstractType
 			])
 			->add('category', EntityType::class, [
 				'class' => ArticleCategory::class,
+				'required' => false,
+				'label' => 'Catégorie',
 				'choice_label' => 'name',
-				'constraints' => new NotBlank()
-			]);
-	}
+				'constraints' => new NotNull()
+			])
+			->add('images', CollectionType::class, [
+				'entry_type' => UploadImageType::class,
+				'label' => 'Images',
+				'prototype' => true,
+				'allow_add' => true,
+				'by_reference' => false,
+				'allow_delete' => true,
+				'entry_options' => [
+					'label' => false,
+					'required' => false,
+				],
+			])
+		;}
 
 	public function configureOptions(OptionsResolver $resolver): void {
 		$resolver->setDefaults([

@@ -21,7 +21,7 @@ class UploadImageType extends AbstractType
                     'required' => false,
                     'constraints' => [
                         new File([
-                            'maxSize' => '2048K',
+                            'maxSize' => '4096K',
                             'mimeTypes' => [
                                 'image/jpeg',
                                 'image/png',
