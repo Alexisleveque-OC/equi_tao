@@ -48,23 +48,21 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6">
-            {{ form_label(formArticle.images) }}
             <p>La première image dans ce formulaire sera l'image principale.</p>
             <ul class="images"
                 data-prototype="{{ form_widget(formArticle.images.vars.prototype)|e('html_attr') }}"
                 data-index="{{ formArticle.images|length }}">
-{#                {% if formArticle.images|length == 0 %}#}
+                {% if article.images|length == 0 %}
                     {{ form_label(formArticle.images) }}
-{#                {% else %}#}
-{#                    {% for image in formArticle.images %}#}
-{#                        <li class="fieldImage">#}
-{#                            <img src="{{ asset(image.vars.value.url) }}"#}
-{#                                 alt="{{ asset(image.vars.value.fileName) }}">#}
-{#                            {{ form_row(image) }}#}
-
-{#                        </li>#}
-{#                    {% endfor %}#}
-{#                {% endif %}#}
+                {% else %}
+                    {% for image in formArticle.images %}
+                        <li class="fieldImage">
+                            <img src="{{ asset(image.vars.value.url) }}"
+                                 alt="{{ asset(image.vars.value.name) }}">
+                            {{ form_row(image) }}
+                        </li>
+                    {% endfor %}
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -76,13 +74,13 @@
                 Créer l'article
             {% endif %}
         </button>
-        {#        {% if editMode %} #}
-        {#            <button type="button" #}
-        {#                    class="btn btn-danger col-3" data-toggle="modal" #}
-        {#                    data-target="#deleteTrickConfModal"> #}
-        {#                Supprimer le trick #}
-        {#            </button> #}
-        {#        {% endif %} #}
+{#                {% if editMode %} #}
+{#                    <button type="button" #}
+{#                            class="btn btn-danger col-3" data-toggle="modal" #}
+{#                            data-target="#deleteTrickConfModal"> #}
+{#                        Supprimer le trick #}
+{#                    </button> #}
+{#                {% endif %} #}
     </div>
     {{ form_end(formArticle) }}
 {% endblock %}

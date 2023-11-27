@@ -1,35 +1,74 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{{ article.title }}
+    {{ article.title }}
 {% endblock %}
 
 {% block body %}
     <div class="card mb-3">
         <h3 class="card-header">{{ article.title }}</h3>
+        {% if app.user and is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_article.update',{'article_slug' : article.slug, 'id' : article.id }) }}"
+               class="btn btn-info">Modifier l'article</a>
+        {% endif %}
         <div class="card-body">
             <h6 class="card-subtitle text-muted">{{ article.category.name }}</h6>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200"
-             aria-label="Placeholder: Image cap" focusable="false" role="img"
-             preserveAspectRatio="xMidYMid slice"
-             viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-            <rect width="100%" height="100%" fill="#868e96"></rect>
-            <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-        </svg>
+        {% if article.images|length > 0 %}
+            <div id="carouselImageIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner carousel-box" style="background: #1a1a1a">
+                    {% for image in article.images %}
+                        <div class="carousel-item
+                    {% if loop.first %}
+                                active
+                    {% endif %}">
+                            {#                        <div style="background-image: url('{{ asset(image.url) }}')"></div> #}
+                            <img class="d-block carousel-image" src="{{ asset(image.url) }}"
+                                 alt="{{ image.alt }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if article.images|length > 1 %}
+                    <a class="carousel-control-prev" href="#carouselImageIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Précédente</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselImageIndicators" role="button" data-slide="next">
+                        <span class="sr-only">Suivante</span>
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                {% endif %}
+            </div>
+        {% else %}
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200"
+                 aria-label="Placeholder: Image cap" focusable="false" role="img"
+                 preserveAspectRatio="xMidYMid slice"
+                 viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+                <rect width="100%" height="100%" fill="#dee2e6"></rect>
+                <text x="50%" y="50%" fill="#1a1a1a" dy=".3em">Cet article n'a pas d'image</text>
+            </svg>
+        {% endif %}
         <div class="card-body">
-            <p class="card-text">{{ article.content | raw}}</p>
+            <p class="card-text">{{ article.content | raw }}</p>
         </div>
         {% if article.lastUpdateDate is not null %}
             <div class="card-footer text-muted">
-                dernière mise à jour: {{ article.lastUpdateDate|date("d/m/YY H:i") }}
+                dernière mise à jour: {{ article.lastUpdateDate|date("d/m/Y H:i") }}
             </div>
         {% else %}
             <div class="card-footer text-muted">
-                création: {{ article.creationDate|date("d/m/yy H:i") }}
+                création: {{ article.creationDate|date("d/m/Y H:i") }}
             </div>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('.carousel').carousel({
+            interval: 5000
+        });
+    </script>
 {% endblock %}
 
 

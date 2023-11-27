@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UploadImageType;
+use App\Form\UploadImageUserType;
 use App\Service\Image\SaveImage;
 use App\Service\Image\UploadImage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +31,7 @@ class UploadController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $form = $this->createForm(UploadImageType::class);
+        $form = $this->createForm(UploadImageUserType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
