@@ -29,6 +29,3 @@ services:
     App\Service\Image\SaveImage:
         arguments:
             $imageDirectory: '%image_directory%'
-    App\Service\Article\ArticleUpdaterService:
-        arguments:
-            $imageDirectory: '%image_directory%'
