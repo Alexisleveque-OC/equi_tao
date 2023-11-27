@@ -1,12 +1,41 @@
 .container {
     padding-top: 100px;
 }
-.avatar_profil
-{
+
+.avatar_profil {
     max-height: 100%;
     max-width: 100%;
 }
+
 .bg-primary {
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.carousel-image {
+    max-height: 100%;
+    width: auto;
+    margin: auto;
+}
+
+.carousel-box {
+    height: 500px;
+}
+.image-list{
+    max-height: 100%;
+    width: auto;
+    margin:auto;
+}
+.image-home{
+    height: 200px;
+    margin:auto;
+}
+.home-card{
+    height: 500px;
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+.card-link-title{
+    color: var(--bs-card-color);
+    text-decoration: none;
 }

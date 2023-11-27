@@ -12,7 +12,9 @@
 
 ###> phpstorm ###
 /.idea
-###< phpunit/phpunit ###
+
+### ignore image ###
+/public/Image
 
 ###> phpunit/phpunit ###
 /phpunit.xml

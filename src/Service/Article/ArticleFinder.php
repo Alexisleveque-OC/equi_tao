@@ -13,6 +13,9 @@ class ArticleFinder
 	public function findAll() {
 		return $this->articleRepository->findAll();
 	}
+	public function findAllDesc() {
+		return $this->articleRepository->findAllDesc();
+	}
 
 	public function findLastArticles($max = 3) {
 		return $this->articleRepository->findLastArticles($max);
