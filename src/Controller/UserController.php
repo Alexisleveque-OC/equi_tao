@@ -9,6 +9,7 @@ use App\Form\DeleteConfirmationType;
 use App\Form\DeleteConfType;
 use App\Form\RegisterUserType;
 use App\Form\UpdateUserForAdminType;
+use App\Form\UploadImageType;
 use App\Form\UploadImageUserType;
 use App\Service\User\deleteUser;
 use App\Service\User\RegisterService;
@@ -139,7 +140,7 @@ class UserController extends AbstractController
 		$user = $userFinder->findOneUser($user_id);
 
 		$formDeleteUser = $this->createForm(DeleteConfType::class);
-		$formImage = $this->createForm(UploadImageUserType::class);
+		$formImage = $this->createForm(UploadImageType::class);
 
 
 		return $this->render('user/show.html.twig', [

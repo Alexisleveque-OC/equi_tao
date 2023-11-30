@@ -22,7 +22,12 @@ class UploadImage
 	/**
 	 * @throws Exception
 	 */
-	public function saveImageOnServer(Image $image) {
+	public function saveImageOnServer(Image|UploadedFile $image) {
+		if ($image instanceof UploadedFile) {
+			$tempImage = new Image();
+			$tempImage->setFile($image);
+			$image = $tempImage;
+		}
 
 		if ($image->getFile() instanceof UploadedFile) {
 			/** @var File $file */
@@ -36,7 +41,8 @@ class UploadImage
 			} catch (FileException $e) {
 				throw new Exception("Le fichier n'a pas pus être enregistré. Liste d'erreur : $e");
 			}
-			$image->setName($newFileName);
+			$image->setName($newFileName)
+				->setFile($file);
 		}
 		return $image;
 

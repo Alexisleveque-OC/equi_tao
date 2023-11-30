@@ -2,9 +2,13 @@
     padding-top: 100px;
 }
 
-.avatar_profil {
-    max-height: 100%;
+.avatar-profil {
+    max-height: 200px;
     max-width: 100%;
+    margin: auto;
+}
+.box-avatar-profil{
+    margin: auto;
 }
 
 .bg-primary {
@@ -38,4 +42,19 @@
 .card-link-title{
     color: var(--bs-card-color);
     text-decoration: none;
+}
+.fieldImage{
+    border: #0a53be 1px solid;
+    border-radius: 20px;
+    z-index: 80;
+    margin: 3%;
+    padding: 5%;
+}
+.fieldImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+li{
+    list-style: none;
 }

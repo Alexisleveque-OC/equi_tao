@@ -18,7 +18,6 @@ class UploadImageUserType extends AbstractType
                     'label' => 'Changer mon image de profil',
                     'help' => 'Taille maximum : 4Mo.
         Types d\'image acceptés : .jpg, .jpeg, .png, .gif',
-                    'mapped' => false,
                     'required' => false,
                     'constraints' => [
                         new File([

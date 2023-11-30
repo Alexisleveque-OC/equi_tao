@@ -58,7 +58,7 @@
                     {% for image in formArticle.images %}
                         <li class="fieldImage">
                             <img src="{{ asset(image.vars.value.url) }}"
-                                 alt="{{ asset(image.vars.value.name) }}">
+                                 alt="{{ asset(image.vars.value.name) }}" class="image-to-upload">
                             {{ form_row(image) }}
                         </li>
                     {% endfor %}

@@ -16,6 +16,7 @@
         </div>
         {% if article.images|length > 0 %}
             <div id="carouselImageIndicators" class="carousel slide" data-ride="carousel">
+                {# generate a div who have style background with an image #}
                 <div class="carousel-inner carousel-box" style="background: #1a1a1a">
                     {% for image in article.images %}
                         <div class="carousel-item

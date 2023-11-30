@@ -5,7 +5,6 @@ namespace App\Service\Image;
 use App\Entity\Image;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\File\File;
 
 class SaveImage
 {
@@ -17,22 +16,21 @@ class SaveImage
 		$this->imageDirectory = $imageDirectory;
 	}
 
-	public function saveImageOnUser(User $user, File $file) {
+	public function saveImageOnUser(User $user, Image $image) {
 		if ($oldImage = $user->getImage()) {
 			$this->deleteImageOnServer($oldImage);
 			$this->manager->remove($oldImage);
 			$this->manager->flush();
 		}
-		$image = new Image();
-		$image->setName($file->getBasename())
-			->setUrl('/Image/' . $file->getFilename())
-			->setAlt("Image de profil de l'utilisateur : {$user->getUsername() }");
+
+		$image->setUrl("/Image/{$image->getName()}")
+			->setAlt("Image de profil de l'utilisateur : {$user->getUsername() }")
+			->setUser($user);
+
 		$this->manager->persist($image);
-		$user->setImage($image);
-		$this->manager->persist($user);
+
 
 		$this->manager->flush();
-
 		return $image;
 	}
 

@@ -8,12 +8,12 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
 
-{#        {% if app.user %}#}
-{#            <div class="offset-2 col-8">#}
-{#                Vous êtes connecté en tant que {{ app.user.username }}, <a#}
-{#                        href="{{ path('app_logout') }}">Déconnexion</a>#}
-{#            </div>#}
-{#        {% endif %}#}
+        {% if app.user %}
+            <div class="offset-2 col-8">
+                Vous êtes connecté en tant que {{ app.user.username }}, <a
+                        href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+        {% endif %}
         {% if app.user == null %}
             <div class="form_login">
                 <div class="offset-2 col-8">

@@ -8,17 +8,17 @@
         <div class="card border-primary col-4">
             <h4 class="card-header text-center">Photo de profil</h4>
             <div class="card-body">
-                <p class="card-text">
+                <p class="card-text box-avatar-profil">
                     {% if user.image is null %}
-                        <img class="avatar_profil" src="{{ asset('Image/avatar.png') }}"
+                        <img class="avatar-profil" src="{{ asset('Image/avatar.png') }}"
                              alt="avatar d'utilisateur non défini">
                     {% else %}
-                        <img class="avatar_profil" src="{{ user.image.url }}"
-                             alt="Photo de l'utilisateur {{ user.username }}">
+                        <img class="avatar-profil" src="{{ user.image.url }}"
+                             alt="Photo de l'utilisateur {{ user.image.alt }}">
                     {% endif %}
                     {% if app.user == user %}
                     {{ form_start(formImage, {'action':path('upload_image_user', {'user': user.id})}) }}
-                    {{ form_row(formImage.image) }}
+                    {{ form_row(formImage.file) }}
                 <div class="text-center">
                     <button class="btn btn-success">Changer mon image de profil</button>
                 </div>
