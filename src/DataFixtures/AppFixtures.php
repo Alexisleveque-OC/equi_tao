@@ -75,6 +75,7 @@ class AppFixtures extends Fixture
 		}
 
 		for ($i = 0; $i < 3; $i++) {
+
 			$categories = [];
 			$category = new ArticleCategory();
 			$category->setName(sprintf("Categorie n°%d", $i))
@@ -84,7 +85,7 @@ class AppFixtures extends Fixture
 
 			$categories[] = $category;
 
-			for ($j = 0; $j < 5; $j++) {
+			for ($j = 0; $j < 3; $j++) {
 				$articles = [];
 				$article = new Article();
 				$article->setTitle(sprintf("Titre de l'article %d", (($j + 1) + ($i * 5))))
@@ -96,6 +97,24 @@ class AppFixtures extends Fixture
 				$slug = $this->slugger->slug($article->getTitle());
 
 				$article->setSlug($slug);
+
+				if ($j === 0 || $j === 2) {
+					$image = new Image();
+					$image->setAlt('Image défaut article')
+						->setName('Image défaut article')
+						->setUrl('/Image/last.jpg')
+						->setArticle($article);
+					$manager->persist($image);
+					if ($j === 0){
+
+						$image = new Image();
+						$image->setAlt('Image 2 défaut article')
+							->setName('Image 2  défaut article')
+							->setUrl('/Image/MAJ.png')
+							->setArticle($article);
+						$manager->persist($image);
+					}
+				}
 
 				$manager->persist($article);
 
