@@ -4,13 +4,16 @@
 {% endblock %}
 
 {% block body %}
-    <h3>Les derniers articles publiés :</h3>
-
     {% if app.user and is_granted('ROLE_ADMIN') %}
         <div class="row">
             <a class="btn btn-primary col-4" href="{{ path('app_article.create') }}">Créer un article</a>
         </div>
+        <div class="row">
+            <a class="btn btn-secondary col-4" href="{{ path('app_article_category.list') }}">Liste des catégories</a>
+        </div>
     {% endif %}
+    <h3>Les derniers articles publiés :</h3>
+
     {% for article in articles %}
         <div class="card mb-3">
             <div class="card-header">

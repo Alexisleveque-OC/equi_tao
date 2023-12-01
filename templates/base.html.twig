@@ -26,6 +26,10 @@
     {% endblock %}
 </head>
 <body>
+{#{% set categories = app.categoryProvider.getCategories %}#}
+{% set categoryProvider = container.get('App\\Service\\ArticleCategory\\CategoryProvider') %}
+
+{% set categories = categoryProvider.getCategories() %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ path('home') }}">Acceuil</a>
@@ -35,25 +39,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{ path('app_article.list') }}">Les news</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">Les news</a>
+                    <div class="dropdown-menu">
+                        {% for category in categories %}
+                            <a class="dropdown-item" href="{{ path('app_article.list') }}#{{ category.slug }}">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Pricing</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
                 </li>
                 {% if app.user and is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">

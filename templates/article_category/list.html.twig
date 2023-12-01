@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-12">
+        <a class="btn btn-outline-success" role="button" data-toggle="modal"
+           data-target="#createCategoryModal"> Créer une nouvelle catégorie
+        </a>
+    </div>
+    {% include "modal/category/createCategory.html.twig" %}
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nom de la catégorie</th>
+            <th scope="col">Nombre d'articles</th>
+            <th scope="col">Dernier article publié</th>
+            <th scope="col">Article créer/modifier le</th>
+            <th scope="col">Modifié le nom de la catégorie</th>
+            <th scope="col">Supprimer?</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            {% set category = category %}
+            <tr class="{% if (loop.index == 0) or (loop.index is not divisible by(2)) %} table-active {% endif %} text-center">
+                {% set lastArticle = category.articles|last %}
+                <td>{{ category.name }}</td>
+                <td>{{ category.articles|length }}  </td>
+                <td>
+                    {% dump( lastArticle ) %}
+                    {% if lastArticle is same as (false) %}
+                        Pas d'article
+                    {% else %}
+                        <a href="{{ path('app_article.show',{
+                            'id' : lastArticle.id,
+                            'article_category_slug': lastArticle.category.slug,
+                            'article_slug': lastArticle.slug
+                        }) }}">{{ lastArticle.title }}</a>
+                    {% endif %}
+                <td>
+                    {% if lastArticle is same as (false) %}
+                        Pas d'article
+                    {% else %}
+                        {{ lastArticle.creationDate|date('d/m/Y') }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('app_article_category.update', {'id': category.id } ) }}" type="button"
+                       class="btn btn-primary" data-toggle="modal"
+                       data-target="#updateModal-{{ category.id }}">Modifier</a>
+                </td>
+
+                <td>
+                    <a href="{{ path('app_article_category.delete', {'id': category.id } ) }}" type="button"
+                       class="btn btn-danger" data-toggle="modal"
+                       data-target="#deleteModal-{{ category.id }}">X</a>
+                </td>
+            </tr>
+
+            {% include "modal/category/deleteCategoryConf.html.twig" %}
+            {% include "modal/category/updateCategory.html.twig" %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block title %}
+    Liste des Catégories
+{% endblock %}
+

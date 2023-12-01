@@ -1,0 +1,20 @@
+<div class="modal fade" id="createCategoryModal" tabindex="-1" role="dialog"
+     aria-labelledby="createCategoryLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCategoryLabel">Nouveau nom de catégorie</h5>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">&times</button>
+            </div>
+            {{ form_start(formCategory, {'action': path('app_article_category.create',{'fromList' : true})}) }}
+            <div class="modal-body">
+                {{ form_row(formCategory.name) }}
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Enregistrer">
+            </div>
+            {{ form_end(formCategory) }}
+        </div>
+    </div>
+</div>

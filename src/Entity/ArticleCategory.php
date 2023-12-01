@@ -29,7 +29,7 @@ class ArticleCategory
         $this->articles = new ArrayCollection();
     }
 
-    public function get(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }

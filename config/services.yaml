@@ -29,3 +29,10 @@ services:
     App\Service\Image\SaveImage:
         arguments:
             $imageDirectory: '%image_directory%'
+    App\Service\ArticleCategory\CategoryProvider:
+        public: true
+        arguments: ['@App\Repository\ArticleCategoryRepository']
+    Symfony\Bridge\Twig\AppVariable:
+        public: true
+        arguments:
+            - '@App\Repository\ArticleCategoryRepository'

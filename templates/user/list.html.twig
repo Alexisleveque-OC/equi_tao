@@ -18,7 +18,7 @@
         </thead>
         <tbody>
         {% for user in users %}
-            <tr {% if (loop.index == 0) or (loop.index is not divisible by(2)) %} class="table-active" {% endif %}>
+            <tr class="{% if (loop.index == 0) or (loop.index is not divisible by(2)) %} table-active {% endif %} text-center">
                 <th scope="row"><a href="{{ path('app_show_user', {'user_id':user.id}) }}">
                         {{ user.username }}
                     </a>

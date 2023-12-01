@@ -32,7 +32,9 @@ class ArticleController extends AbstractController
 	public function create(Request $request, ArticleUpdaterService $articleUpdaterService, Article $article = null): Response {
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-		if ($article && $oldImages = $this->imageRepository->findByArticle($article)) {
+		$oldImages = $article ? $this->imageRepository->findBy(['article' => $article]) : null;
+
+		if ($article && $oldImages === null) {
 			foreach ($oldImages as $image) {
 				$article->addImage($image);
 			}
