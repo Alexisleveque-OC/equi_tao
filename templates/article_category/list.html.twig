@@ -45,13 +45,13 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('app_article_category.update', {'id': category.id } ) }}" type="button"
+                    <a type="button"
                        class="btn btn-primary" data-toggle="modal"
                        data-target="#updateModal-{{ category.id }}">Modifier</a>
                 </td>
 
                 <td>
-                    <a href="{{ path('app_article_category.delete', {'id': category.id } ) }}" type="button"
+                    <a type="button"
                        class="btn btn-danger" data-toggle="modal"
                        data-target="#deleteModal-{{ category.id }}">X</a>
                 </td>

@@ -21,9 +21,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class UserController extends AbstractController
 {
+	#[Required]
+	public deleteUser $deleteUser;
+
 	#[Route('/inscription', name: 'app_registration')]
 	public function registration(Request $request, RegisterService $registerService) {
 
@@ -124,12 +128,17 @@ class UserController extends AbstractController
 	public function listUser(UserFinderService $userFinderService) {
 		$this->denyAccessUnlessGranted(('ROLE_ADMIN'));
 		$users = $userFinderService->listAll();
+		$formsDeleteUser = [];
 
-		$formDeleteUser = $this->createForm(DeleteConfType::class);
-
+		foreach ($users as $user) {
+			$formDeleteUser = $this->createForm(DeleteConfType::class, null, [
+				'action' => $this->generateUrl('delete_user', ['id' => $user->getId()]),
+			]);
+			$formsDeleteUser[$user->getId()] = $formDeleteUser->createView();
+		}
 		return $this->render('user/list.html.twig', [
 			'users' => $users,
-			'formDeleteUser' => $formDeleteUser->createView()
+			'formsDeleteUser' => $formsDeleteUser
 		]);
 
 	}
@@ -151,7 +160,7 @@ class UserController extends AbstractController
 	}
 
 	#[Route('/utilisateur_delete/{id}', name: 'delete_user')]
-	public function deleteUser(Request $request, User $user, deleteUser $deleteUser, Security $security) {
+	public function deleteUser(Request $request, User $user,  Security $security) {
 		if ($this->getUser() !== $user) {
 			$this->denyAccessUnlessGranted('ROLE_ADMIN');
 		}
@@ -164,7 +173,7 @@ class UserController extends AbstractController
 			if ($this->getUser() === $user) {
 				$security->logout(false);
 			}
-			$deleteUser->deleteUser($user);
+			$this->deleteUser->deleteUser($user);
 
 			if ($this->getUser() !== null && in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
 				$this->addFlash("info", "Le compte de {$user->getUsername()} a bien été supprimé.");

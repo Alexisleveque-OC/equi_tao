@@ -17,6 +17,7 @@
         </tr>
         </thead>
         <tbody>
+            {% dump users %}
         {% for user in users %}
             <tr class="{% if (loop.index == 0) or (loop.index is not divisible by(2)) %} table-active {% endif %} text-center">
                 <th scope="row"><a href="{{ path('app_show_user', {'user_id':user.id}) }}">
@@ -31,10 +32,13 @@
                         {% endfor %}
                     </a></td>
 
-                <td><a href="{{ path('delete_user', {'id': user.id } ) }}" type="button" class="btn btn-danger">X</a>
-
+                <td>
+                    <a href="{{ path('delete_user', {'id': user.id } ) }}" type="button"
+                       class="btn btn-danger" data-toggle="modal"
+                       data-target="#deleteModal-{{ user.id }}">X</a>
                 </td>
             </tr>
+            {% include 'modal/user/deleteUser.html.twig' %}
         {% endfor %}
         </tbody>
     </table>
