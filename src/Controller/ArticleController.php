@@ -106,19 +106,21 @@ class ArticleController extends AbstractController
 			}
 		}
 
-		$formDelete = $this->createForm(DeleteConfType::class, null, [
+		$formsDelete[$article->getId()] = $this->createForm(DeleteConfType::class, null, [
 			'action' => $this->generateUrl('app_article.delete', ['id' => $article->getId()]),
 		]);
+		$formsDelete[$article->getId()] = $formsDelete[$article->getId()]->createView();
 
 		return $this->render('article/show.html.twig', [
 			'article' => $article,
-			'formDelete' => $formDelete->createView(),
+			'formsDelete' => $formsDelete,
 		]);
 	}
 
 	#[Route('/delete/{id}', name: 'delete')]
 	public function delete(Request $request, Article $article, ArticleDelete $articleDelete): Response {
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
+		$category = $article->getCategory();
 
 		$form = $this->createForm(DeleteConfType::class);
 		$form->handleRequest($request);
@@ -129,6 +131,8 @@ class ArticleController extends AbstractController
 		}
 
 
-		return $this->redirectToRoute('app_article.list');
+		return $this->redirectToRoute('app_article.list', [
+			'categorie' => $category->getSlug(),
+		]);
 	}
 }
