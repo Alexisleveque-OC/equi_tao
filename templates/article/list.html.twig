@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block body %}
+    <h3>Les derniers articles publiés :</h3>
     {% if app.user and is_granted('ROLE_ADMIN') %}
         <div class="row">
             <a class="btn btn-primary col-4" href="{{ path('app_article.create') }}">Créer un article</a>
@@ -12,75 +13,164 @@
             <a class="btn btn-secondary col-4" href="{{ path('app_article_category.list') }}">Liste des catégories</a>
         </div>
     {% endif %}
-    <h3>Les derniers articles publiés :</h3>
+    <ul class="nav nav-tabs" role="tablist">
+        {% for category in categories %}
+            <li class="nav-item" role="presentation">
+                <a class="nav-link {% if app.request.get('categorie') == category.slug %} show active {% endif %}"
+                   data-bs-toggle="tab" href="#{{ category.slug }}" aria-selected="false" role="tab"
+                   tabindex="-1">{{ category.name }}</a>
+            </li>
+        {% endfor %}
+        {% for category in categories %}
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade
+                        {% if app.request.get('categorie') == category.slug %} show active {% endif %}"
+                     id="{{ category.slug }}" role="tabpanel"
+                >
+                    {% for article in category.articles|reverse %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <a href="{{ path('app_article.show',
+                                    {'id': article.id,
+                                        'article_category_slug' : article.category.slug,
+                                        'article_slug' : article.slug,
+                                    }
+                                ) }}" class="card-link-title">
+                                    <h3>{{ article.title }}</h3>
+                                </a>
+                                {% if app.user and is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_article.update',{'article_slug' : article.slug, 'id' : article.id }) }}"
+                                       class="btn btn-info">Modifier l'article</a>
+                                    <a type="button"
+                                       class="btn btn-danger" data-toggle="modal"
+                                       data-target="#deleteModal-{{ article.id }}">Supprimer l'article</a>
+                                    {% include 'modal/article/deleteArticleConf.html.twig' %}
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-subtitle text-muted">{{ article.category.name }}</h6>
+                            </div>
+                            <a href="{{ path('app_article.show',
+                                {'id': article.id,
+                                    'article_category_slug' : article.category.slug,
+                                    'article_slug' : article.slug,
+                                }
+                            ) }}" class="card-link-title ">
+                                <div class="carousel-box">
+                                    {% if article.images|length > 0 %}
+                                        <img class="image-list" src="{{ asset(article.images[0].url) }}"
+                                             alt="{{ asset(article.images[0].alt) }}">
+                                    {% else %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none"
+                                             width="100%"
+                                             height="400"
+                                             aria-label="Placeholder: Image cap" focusable="false" role="img"
+                                             preserveAspectRatio="xMidYMid slice"
+                                             viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+                                            <rect width="100%" height="100%" fill="#dee2e6"></rect>
+                                            <text x="50%" y="50%" fill="#1a1a1a" dy=".3em">Cet article n'a pas d'image
+                                            </text>
+                                        </svg>
+                                    {% endif %}
+                                </div>
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text">{{ article.content| raw }}</p>
+                            </div>
+                            <div class="card-body">
+                                <a href="{{ path('app_article.show',
+                                    {'id': article.id,
+                                        'article_category_slug' : article.category.slug,
+                                        'article_slug' : article.slug,
+                                    }
+                                ) }}" class="card-link">Voir l'article</a>
+                            </div>
+                            {% if article.lastUpdateDate is not null %}
+                                <div class="card-footer text-muted">
+                                    dernière mise à jour: {{ article.lastUpdateDate|date("d/m/YY H:i") }}
+                                </div>
+                            {% else %}
+                                <div class="card-footer text-muted">
+                                    création: {{ article.creationDate|date("d/m/yy H:i") }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
 
-    {% for article in articles %}
-        <div class="card mb-3">
-            <div class="card-header">
-                <a href="{{ path('app_article.show',
-                    {'id': article.id,
-                        'article_category_slug' : article.category.slug,
-                        'article_slug' : article.slug,
-                    }
-                ) }}" class="card-link-title">
-                    <h3>{{ article.title }}</h3>
-                </a>
-                {% if app.user and is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_article.update',{'article_slug' : article.slug, 'id' : article.id }) }}"
-                       class="btn btn-info">Modifier l'article</a>
-                    <a type="button"
-                       class="btn btn-danger" data-toggle="modal"
-                       data-target="#deleteModal-{{ article.id }}">Supprimer l'article</a>
-                    {% include 'modal/article/deleteArticleConf.html.twig' %}
-                {% endif %}
-            </div>
-            <div class="card-body">
-                <h6 class="card-subtitle text-muted">{{ article.category.name }}</h6>
-            </div>
-            <a href="{{ path('app_article.show',
-                {'id': article.id,
-                    'article_category_slug' : article.category.slug,
-                    'article_slug' : article.slug,
-                }
-            ) }}" class="card-link-title ">
-                <div class="carousel-box">
-                    {% if article.images|length > 0 %}
-                        <img class="image-list" src="{{ asset(article.images[0].url) }}"
-                             alt="{{ asset(article.images[0].alt) }}">
-                    {% else %}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%"
-                             height="400"
-                             aria-label="Placeholder: Image cap" focusable="false" role="img"
-                             preserveAspectRatio="xMidYMid slice"
-                             viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-                            <rect width="100%" height="100%" fill="#dee2e6"></rect>
-                            <text x="50%" y="50%" fill="#1a1a1a" dy=".3em">Cet article n'a pas d'image</text>
-                        </svg>
-                    {% endif %}
-                </div>
-            </a>
-            <div class="card-body">
-                <p class="card-text">{{ article.content| raw }}</p>
-            </div>
-            <div class="card-body">
-                <a href="{{ path('app_article.show',
-                    {'id': article.id,
-                        'article_category_slug' : article.category.slug,
-                        'article_slug' : article.slug,
-                    }
-                ) }}" class="card-link">Voir l'article</a>
-            </div>
-            {% if article.lastUpdateDate is not null %}
-                <div class="card-footer text-muted">
-                    dernière mise à jour: {{ article.lastUpdateDate|date("d/m/YY H:i") }}
-                </div>
-            {% else %}
-                <div class="card-footer text-muted">
-                    création: {{ article.creationDate|date("d/m/yy H:i") }}
-                </div>
-            {% endif %}
-        </div>
-    {% endfor %}
+    </ul>
+    {#    {% for article in articles %} #}
+    {#        <div class="card mb-3"> #}
+    {#            <div class="card-header"> #}
+    {#                <a href="{{ path('app_article.show', #}
+    {#                    {'id': article.id, #}
+    {#                        'article_category_slug' : article.category.slug, #}
+    {#                        'article_slug' : article.slug, #}
+    {#                    } #}
+    {#                ) }}" class="card-link-title"> #}
+    {#                    <h3>{{ article.title }}</h3> #}
+    {#                </a> #}
+    {#                {% if app.user and is_granted('ROLE_ADMIN') %} #}
+    {#                    <a href="{{ path('app_article.update',{'article_slug' : article.slug, 'id' : article.id }) }}" #}
+    {#                       class="btn btn-info">Modifier l'article</a> #}
+    {#                    <a type="button" #}
+    {#                       class="btn btn-danger" data-toggle="modal" #}
+    {#                       data-target="#deleteModal-{{ article.id }}">Supprimer l'article</a> #}
+    {#                    {% include 'modal/article/deleteArticleConf.html.twig' %} #}
+    {#                {% endif %} #}
+    {#            </div> #}
+    {#            <div class="card-body"> #}
+    {#                <h6 class="card-subtitle text-muted">{{ article.category.name }}</h6> #}
+    {#            </div> #}
+    {#            <a href="{{ path('app_article.show', #}
+    {#                {'id': article.id, #}
+    {#                    'article_category_slug' : article.category.slug, #}
+    {#                    'article_slug' : article.slug, #}
+    {#                } #}
+    {#            ) }}" class="card-link-title "> #}
+    {#                <div class="carousel-box"> #}
+    {#                    {% if article.images|length > 0 %} #}
+    {#                        <img class="image-list" src="{{ asset(article.images[0].url) }}" #}
+    {#                             alt="{{ asset(article.images[0].alt) }}"> #}
+    {#                    {% else %} #}
+    {#                        <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" #}
+    {#                             height="400" #}
+    {#                             aria-label="Placeholder: Image cap" focusable="false" role="img" #}
+    {#                             preserveAspectRatio="xMidYMid slice" #}
+    {#                             viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle"> #}
+    {#                            <rect width="100%" height="100%" fill="#dee2e6"></rect> #}
+    {#                            <text x="50%" y="50%" fill="#1a1a1a" dy=".3em">Cet article n'a pas d'image</text> #}
+    {#                        </svg> #}
+    {#                    {% endif %} #}
+    {#                </div> #}
+    {#            </a> #}
+    {#            <div class="card-body"> #}
+    {#                <p class="card-text">{{ article.content| raw }}</p> #}
+    {#            </div> #}
+    {#            <div class="card-body"> #}
+    {#                <a href="{{ path('app_article.show', #}
+    {#                    {'id': article.id, #}
+    {#                        'article_category_slug' : article.category.slug, #}
+    {#                        'article_slug' : article.slug, #}
+    {#                    } #}
+    {#                ) }}" class="card-link">Voir l'article</a> #}
+    {#            </div> #}
+    {#            {% if article.lastUpdateDate is not null %} #}
+    {#                <div class="card-footer text-muted"> #}
+    {#                    dernière mise à jour: {{ article.lastUpdateDate|date("d/m/YY H:i") }} #}
+    {#                </div> #}
+    {#            {% else %} #}
+    {#                <div class="card-footer text-muted"> #}
+    {#                    création: {{ article.creationDate|date("d/m/yy H:i") }} #}
+    {#                </div> #}
+    {#            {% endif %} #}
+    {#        </div> #}
+    {#    {% endfor %} #}
 {% endblock %}
 
 
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

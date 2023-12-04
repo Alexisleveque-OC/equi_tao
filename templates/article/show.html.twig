@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="card mb-3">
+    <div class="card mb-3 fade-in" >
         <h3 class="card-header">{{ article.title }}</h3>
         {% if app.user and is_granted('ROLE_ADMIN') %}
             <a href="{{ path('app_article.update',{'article_slug' : article.slug, 'id' : article.id }) }}"

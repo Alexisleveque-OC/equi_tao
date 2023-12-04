@@ -44,7 +44,7 @@
                        aria-haspopup="true" aria-expanded="false">Les news</a>
                     <div class="dropdown-menu">
                         {% for category in categories %}
-                            <a class="dropdown-item" href="{{ path('app_article.list') }}#{{ category.slug }}">{{ category.name }}</a>
+                            <a class="dropdown-item" href="{{ path('app_article.list') }}?categorie={{ category.slug }}">{{ category.name }}</a>
                         {% endfor %}
                     </div>
                 </li>
