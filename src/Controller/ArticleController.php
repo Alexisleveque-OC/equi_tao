@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleCategoryType;
 use App\Form\ArticleType;
+use App\Form\DeleteConfType;
 use App\Repository\ArticleRepository;
 use App\Repository\ImageRepository;
+use App\Service\Article\ArticleDelete;
 use App\Service\Article\ArticleFinder;
 use App\Service\Article\ArticleUpdaterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,22 +81,54 @@ class ArticleController extends AbstractController
 	public function list(ArticleFinder $finder): Response {
 		$articles = $finder->findAllDesc();
 
+		$formsDelete = [];
+		foreach ($articles as $article) {
+			$formDelete = $this->createForm(DeleteConfType::class, null, [
+				'action' => $this->generateUrl('app_article.delete', ['id' => $article->getId()]),
+			]);
+			$formsDelete[$article->getId()] = $formDelete->createView();
+		}
+
 		return $this->render('article/list.html.twig', [
-			'articles' => $articles
+			'articles' => $articles,
+			'formsDelete' => $formsDelete,
 		]);
 	}
 
 	#[Route('/{article_category_slug}/{id<\d+>}-{article_slug}', name: 'show')]
 	public function show(Article $article): Response {
-		dump($article);
+
 		$images = $this->imageRepository->findBy(['article' => $article]);
+
 		if ($images) {
 			foreach ($images as $image) {
 				$article->addImage($image);
 			}
 		}
-		return $this->render('article/show.html.twig', [
-			'article' => $article
+
+		$formDelete = $this->createForm(DeleteConfType::class, null, [
+			'action' => $this->generateUrl('app_article.delete', ['id' => $article->getId()]),
 		]);
+
+		return $this->render('article/show.html.twig', [
+			'article' => $article,
+			'formDelete' => $formDelete->createView(),
+		]);
+	}
+
+	#[Route('/delete/{id}', name: 'delete')]
+	public function delete(Request $request, Article $article, ArticleDelete $articleDelete): Response {
+		$this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+		$form = $this->createForm(DeleteConfType::class);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			$articleDelete->delete($article);
+			$this->addFlash('success', 'L\'article a bien été supprimé.');
+		}
+
+
+		return $this->redirectToRoute('app_article.list');
 	}
 }

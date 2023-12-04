@@ -1,0 +1,16 @@
+<div class="modal fade" id="deleteModal-{{ article.id }}" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteArticleLabel">Supprimer cet article : {{ article.title }} ?</h5>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">&times</button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cet article: {{ article.title }}?</p>
+            </div>
+            {{ form_start(formsDelete[article.id]) }}
+            {{ form_end(formsDelete[article.id]) }}
+        </div>
+    </div>
+</div>

@@ -10,6 +10,10 @@
         {% if app.user and is_granted('ROLE_ADMIN') %}
             <a href="{{ path('app_article.update',{'article_slug' : article.slug, 'id' : article.id }) }}"
                class="btn btn-info">Modifier l'article</a>
+            <a type="button"
+               class="btn btn-danger" data-toggle="modal"
+               data-target="#deleteModal-{{ article.id }}">Supprimer l'article</a>
+            {% include 'modal/article/deleteArticleConf.html.twig' %}
         {% endif %}
         <div class="card-body">
             <h6 class="card-subtitle text-muted">{{ article.category.name }}</h6>
