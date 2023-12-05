@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Validator;
+namespace App\Validator\Security;
 
-use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -20,7 +19,6 @@ class OldPasswordMatchValidator extends ConstraintValidator
 	 */
 	public function validate(mixed $value, Constraint $constraint) {
 
-		dump($constraint->user);
 		if (!$constraint instanceof OldPasswordMatch) {
 			throw new UnexpectedTypeException($constraint, OldPasswordMatch::class);
 		}

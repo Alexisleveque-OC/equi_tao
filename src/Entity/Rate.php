@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\RateRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: RateRepository::class)]
+#[UniqueEntity('title', message: 'Ce titre de prix est déjà utilisé.')]
 class Rate
 {
     #[ORM\Id]

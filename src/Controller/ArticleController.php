@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Form\ArticleCategoryType;
-use App\Form\ArticleType;
+use App\Form\Article\ArticleType;
+use App\Form\ArticleCategory\ArticleCategoryType;
 use App\Form\DeleteConfType;
 use App\Repository\ArticleRepository;
 use App\Repository\ImageRepository;

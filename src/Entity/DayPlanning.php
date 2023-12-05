@@ -6,8 +6,10 @@ use App\Repository\DayPlanningRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DayPlanningRepository::class)]
+#[UniqueEntity('name', message: 'Ce nom de planning est déjà utilisé.')]
 class DayPlanning
 {
     #[ORM\Id]

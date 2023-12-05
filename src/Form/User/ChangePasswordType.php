@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\User;
 
 use App\Entity\User;
-use App\Validator\OldPasswordMatch;
+use App\Validator\Security\OldPasswordMatch;
+use App\Validator\Security\PasswordReinforcer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -19,7 +20,12 @@ class ChangePasswordType extends AbstractType
                     'type' => PasswordType::class,
                     'first_options' => ['label' => 'Nouveau mot de passe', 'attr' => ['placeholder' => 'Nouveau mot de passe']],
                     'second_options' => ['label' => 'Confirmation du nouveau mot de passe', 'attr' => ['placeholder' => 'Confirmation du nouveau mot de passe']],
-                    'required' => true]
+                    'required' => true,
+					'help' => 'Le mot de passe doit contenir au moins 8 caractères dont une majuscule, une minuscule, un chiffre et un caractère spécial',
+					'constraint' => [
+						new PasswordReinforcer()
+					]
+				]
             );
 
         if (!$options['byAdmin']) {

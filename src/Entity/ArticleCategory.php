@@ -6,8 +6,10 @@ use App\Repository\ArticleCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ArticleCategoryRepository::class)]
+#[UniqueEntity('name', message: 'Ce nom de catégorie est déjà utilisé.')]
 class ArticleCategory
 {
     #[ORM\Id]

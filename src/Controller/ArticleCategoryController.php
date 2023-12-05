@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ArticleCategory;
-use App\Form\ArticleCategoryType;
+use App\Form\ArticleCategory\ArticleCategoryType;
 use App\Form\DeleteConfType;
 use App\Service\ArticleCategory\ArticleCategoryFinder;
 use App\Service\ArticleCategory\CreateCategory;

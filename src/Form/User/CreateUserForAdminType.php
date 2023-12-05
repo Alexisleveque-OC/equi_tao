@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\User;
 
 use App\Entity\User;
-use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email as EmailConstraint;
 
 class CreateUserForAdminType extends AbstractType
 {
@@ -19,9 +19,14 @@ class CreateUserForAdminType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'constraints' => new NotBlank(),
+                'constraints' => new EmailConstraint(message: "L'adresse email n'est pas valide"),
             ])
-            ->add('username')
+            ->add('username', TextType::class, [
+				'constraints' => [
+					new NotBlank(),
+					new Length(min: 5, minMessage: "Le nom d'utilisateur doit contenir au moins {{ limit }} caractères")
+		]
+			])
 //            ->add('password', TextType::class, [
 //                'password' => ['label' => 'Mot de passe actuel'],
 //                'required' => false

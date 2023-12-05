@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Article;
 
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
+use App\Form\UploadImageType;
 use Eckinox\TinymceBundle\Form\Type\TinymceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

@@ -3,18 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\ChangePasswordType;
-use App\Form\CreateUserForAdminType;
-use App\Form\DeleteConfirmationType;
 use App\Form\DeleteConfType;
-use App\Form\RegisterUserType;
-use App\Form\UpdateUserForAdminType;
 use App\Form\UploadImageType;
-use App\Form\UploadImageUserType;
+use App\Form\User\ChangePasswordType;
+use App\Form\User\CreateUserForAdminType;
+use App\Form\User\RegisterUserType;
 use App\Service\User\deleteUser;
 use App\Service\User\RegisterService;
 use App\Service\User\UpdatePass;
-use App\Service\User\UpdateRoleService;
 use App\Service\User\UpdateService;
 use App\Service\User\UserFinderService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
