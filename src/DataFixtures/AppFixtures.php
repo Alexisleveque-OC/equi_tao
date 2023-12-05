@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
+use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -59,7 +60,6 @@ class AppFixtures extends Fixture
 				$manager->persist($image);
 			}
 
-			$users = [];
 			$user = new User();
 			$hashedPassword = $this->hasher->hashPassword($user, sprintf("user%d", $i));
 			$user->setRoles(['ROLE_USER'])
@@ -105,7 +105,7 @@ class AppFixtures extends Fixture
 						->setUrl('/Image/last.jpg')
 						->setArticle($article);
 					$manager->persist($image);
-					if ($j === 0){
+					if ($j === 0) {
 
 						$image = new Image();
 						$image->setAlt('Image 2 défaut article')
@@ -116,13 +116,22 @@ class AppFixtures extends Fixture
 					}
 				}
 
+				for ($k = 0; $k < mt_rand(3, 10); $k++) {
+					$comment = new Comment();
+					$comment->setUser($users[mt_rand(0, count($users) - 1)])
+						->setArticle($article)
+						->setContent($faker->text())
+						->setCreationDate(new \DateTime())
+						->setIsValidate(mt_rand(0, 1) === 1 ? true : false);
+					$manager->persist($comment);
+				}
+
 				$manager->persist($article);
 
 				$articles[] = $article;
 			}
 
 		}
-
 
 		$manager->flush();
 	}
