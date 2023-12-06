@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Listes des commentaires à valider
+{% endblock %}
+
+{% block body %}
+    <h2>Listes des commentaires à valider :</h2>
+    <div class="comments">
+        {% for comment in comments %}
+            {% if comment.isvalidate == false %}
+                <div class="row comment">
+                    <div class="col-xs-12 col-sm-2">
+                        <div class=" text-center">
+                            <b class="row">
+                                <a class="col-12" href="{{ path('app_show_user',{'user_id':comment.user.id}) }}">
+                                    {{ comment.user.username }}
+                                    <div class="col-12">
+                                        {% if comment.user.image is null %}
+                                            <img class="user-image" src="{{ asset('image/avatar.png') }}"
+                                                 alt="photo d'utilisateur">
+                                        {% else %}
+                                            <img class="user-image" src="{{ comment.user.image.url }}"
+                                                 alt="photo d'utilisateur">
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </b>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-10">
+                        <p>
+                            écrit le <strong>{{ comment.creationDate | date("d/m/Y H:i") }}</strong>
+                            Sur l'article: <strong>{{ comment.article.title }} </strong>
+                        </p>
+                        <hr>
+                        <div class="comment-content">
+                            {{ comment.content }}
+                        </div>
+                        <div class="metadata">
+
+                            {% if app.user == comment.user %}
+                                <hr>
+                                <div class="text-center ">
+                                    {#                        <button type="button" class="btn btn-danger" data-toggle="modal" #}
+                                    {#                                data-target="#deleteCommentModal"> #}
+                                    {#                            Supprimer mon commentaire #}
+                                    {#                        </button> #}
+                                    {#                        {% include 'modal/deleteComment.html.twig' %} #}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+

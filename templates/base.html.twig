@@ -63,6 +63,11 @@
             <div>
                 {% if app.user %}
                     <ul class="navbar-nav me-auto">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_comment.list_invalidate') }}">Commentaires</a>
+                        </li>
+                    {% endif %}
                         <li class="nav-item">
                             <a class="nav-link"
                                href="{{ path('app_show_user',{'user_id' : app.user.id}) }}"> {{ app.user.username }} </a>

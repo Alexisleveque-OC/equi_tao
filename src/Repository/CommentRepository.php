@@ -39,6 +39,14 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
+	public function findAllInvalidate() {
+		return $this->createQueryBuilder('c')
+			->andWhere('c.isValidate = :val')
+			->setParameter('val', false)
+			->orderBy('c.id', 'DESC')
+			->getQuery()
+			->getResult();
+	}
 //    /**
 //     * @return Comment[] Returns an array of Comment objects
 //     */
