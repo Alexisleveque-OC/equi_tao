@@ -30,7 +30,7 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $article = null;
 
-    public function get(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }

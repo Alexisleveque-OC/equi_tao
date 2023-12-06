@@ -3,6 +3,7 @@
 namespace App\Service\Comment;
 
 use App\Repository\CommentRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class CommentFinder
@@ -12,6 +13,13 @@ class CommentFinder
 
 	public function findAllInvalidate() {
 		return $this->commentRepository->findAllInvalidate();
+	}
+
+	/**
+	 * @throws NonUniqueResultException
+	 */
+	public function findOneById(int $id) {
+		return $this->commentRepository->findOneById($id);
 	}
 
 }

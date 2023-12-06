@@ -28,26 +28,33 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-10">
-                        <p>
-                            écrit le <strong>{{ comment.creationDate | date("d/m/Y H:i") }}</strong>
-                            Sur l'article: <strong>{{ comment.article.title }} </strong>
-                        </p>
+                        <div class="row">
+                            <p class="col-12">
+                                écrit le <strong>{{ comment.creationDate | date("d/m/Y H:i") }}</strong>
+                                Sur l'article: <strong>{{ comment.article.title }} </strong>
+                            </p>
+                        </div>
                         <hr>
                         <div class="comment-content">
                             {{ comment.content }}
                         </div>
                         <div class="metadata">
-
-                            {% if app.user == comment.user %}
-                                <hr>
-                                <div class="text-center ">
-                                    {#                        <button type="button" class="btn btn-danger" data-toggle="modal" #}
-                                    {#                                data-target="#deleteCommentModal"> #}
-                                    {#                            Supprimer mon commentaire #}
-                                    {#                        </button> #}
-                                    {#                        {% include 'modal/deleteComment.html.twig' %} #}
+                            <div class="row">
+                                <div class="col-2">
+                                    <a class="btn btn-danger"
+                                            {#                                   href="{{ path('app_comment.delete',{'id':comment.id}) }}" #}
+                                    >
+                                        Supprimer
+                                    </a>
                                 </div>
-                            {% endif %}
+                                <div class=" offset-8 col-2">
+                                    <a class="btn btn-success"
+                                       href="{{ path('app_comment.validate',{'id':comment.id}) }}">
+                                        Valider
+                                    </a>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>

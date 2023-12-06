@@ -1,8 +1,8 @@
 {% block comment %}
-    <div class="comment container">
+    <div class="comments container">
         {% for comment in article.getComments|reverse %}
             {% if comment.isvalidate %}
-            <div class="row">
+            <div class="row comment">
                 <div class="col-xs-12 col-sm-2">
                     <div class=" text-center">
                         <b class="row">
