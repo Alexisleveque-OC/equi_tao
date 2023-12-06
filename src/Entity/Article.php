@@ -235,4 +235,14 @@ class Article
         return $this;
     }
 
+	public function getNoValidatedComment():bool {
+		foreach ($this->comments as $comment) {
+			/** @var Comment $comment */
+			if (!$comment->isValidate()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

@@ -42,12 +42,29 @@ class CommentController extends AbstractController
 		return $this->redirectToRoute('app_comment.list_invalidate');
 	}
 
-	#[Route(path: '/supprimer/{comment}', name: 'delete')]
-	public function delete(Comment $comment) {
-		$this->denyAccessUnlessGranted('ROLE_ADMIN');
-		
+	#[Route(path: '/supprimer/{comment}-{inArticle}', name: 'delete')]
+	public function delete(Comment $comment = null, bool $inArticle = false) {
+		if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles()) ) {
+			if ($this->getUser() !== $comment->getUser()) {
+				$this->addFlash('danger', "Vous n'avez pas le droit de supprimer ce commentaire");
+				return $this->redirectToRoute('app_article.show', [
+					'article_category_slug' => $comment->getArticle()->getCategory()->getSlug(),
+					'id' => $comment->getArticle()->getId(),
+					'article_slug' => $comment->getArticle()->getSlug(),
+				]);
+			}
+		}
+
 		$this->commentService->deleteComment($comment);
 		$this->addFlash('danger', "Le commentaire de {$comment->getUser()->getUsername()} a bien été supprimé");
+
+		if ($inArticle) {
+			return $this->redirectToRoute('app_article.show', [
+				'article_category_slug' => $comment->getArticle()->getCategory()->getSlug(),
+				'id' => $comment->getArticle()->getId(),
+				'article_slug' => $comment->getArticle()->getSlug(),
+			]);
+		}
 
 		return $this->redirectToRoute('app_comment.list_invalidate');
 	}

@@ -59,7 +59,7 @@ class Comment
         return $this;
     }
 
-    public function isIsValidate(): ?bool
+    public function isValidate(): ?bool
     {
         return $this->isValidate;
     }

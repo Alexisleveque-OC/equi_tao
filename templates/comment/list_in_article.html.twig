@@ -2,46 +2,58 @@
     <div class="comments container">
         {% for comment in article.getComments|reverse %}
             {% if comment.isvalidate %}
-            <div class="row comment">
-                <div class="col-xs-12 col-sm-2">
-                    <div class=" text-center">
-                        <b class="row">
-                            <a class="col-12" href="{{ path('app_show_user',{'user_id':comment.user.id}) }}">
-                                {{ comment.user.username }}
-                                <div class="col-12">
-                                    {% if comment.user.image is null %}
-                                        <img class="user-image" src="{{ asset('image/avatar.png') }}"
-                                             alt="photo d'utilisateur">
-                                    {% else %}
-                                        <img class="user-image" src="{{ comment.user.image.url }}"
-                                             alt="photo d'utilisateur">
-                                    {% endif %}
-                                </div>
-                            </a>
-                        </b>
+                <div class="row comment">
+                    <div class="col-xs-12 col-sm-2">
+                        <div class=" text-center">
+                            <b class="row">
+                                <a class="col-12" href="{{ path('app_show_user',{'user_id':comment.user.id}) }}">
+                                    {{ comment.user.username }}
+                                    <div class="col-12">
+                                        {% if comment.user.image is null %}
+                                            <img class="user-image" src="{{ asset('image/avatar.png') }}"
+                                                 alt="photo d'utilisateur">
+                                        {% else %}
+                                            <img class="user-image" src="{{ comment.user.image.url }}"
+                                                 alt="photo d'utilisateur">
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            </b>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-10">
-                    <p>écrit le <strong>{{ comment.creationDate | date("d/m/Y H:i") }}</strong></p>
-                    <div class="comment-content">
-                        {{ comment.content }}
-                    </div>
-                    <div class="metadata">
+                    <div class="col-xs-12 col-sm-10">
+                        <p>écrit le <strong>{{ comment.creationDate | date("d/m/Y H:i") }}</strong></p>
+                        <div class="comment-content">
+                            {{ comment.content }}
+                        </div>
+                        <div class="metadata">
 
-                        {% if app.user == comment.user %}
-                            <hr>
-                            <div class="text-center ">
-                                {#                        <button type="button" class="btn btn-danger" data-toggle="modal" #}
-                                {#                                data-target="#deleteCommentModal"> #}
-                                {#                            Supprimer mon commentaire #}
-                                {#                        </button> #}
-                                {#                        {% include 'modal/deleteComment.html.twig' %} #}
-                            </div>
-                        {% endif %}
+                            {% if app.user == comment.user or is_granted('ROLE_ADMIN') %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <hr>
+                                    <div class="text-center ">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#deleteCommentModal-{{ comment.id }}">
+                                            Supprimer ce commentaire
+                                        </button>
+                                        {% include 'modal/comment/deleteComment.html.twig' %}
+                                    </div>
+                                {% endif %}
+                                {% if app.user == comment.user %}
+                                    <hr>
+                                    <div class="text-center ">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                data-target="#deleteCommentModal-{{ comment.id }}">
+                                            Supprimer mon commentaire
+                                        </button>
+                                        {% include 'modal/comment/deleteComment.html.twig' %}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <hr>
+                <hr>
             {% endif %}
         {% endfor %}
     </div>

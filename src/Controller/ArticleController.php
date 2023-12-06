@@ -111,9 +111,17 @@ class ArticleController extends AbstractController
 		]);
 		$formsDelete[$article->getId()] = $formsDelete[$article->getId()]->createView();
 
+		foreach ($article->getComments() as $comment) {
+			$formsDeleteComment[$comment->getId()] = $this->createForm(DeleteConfType::class, null, [
+				'action' => $this->generateUrl('app_comment.delete', ['comment' => $comment->getId(), 'inArticle' => true]),
+			]);
+			$formsDeleteComment[$comment->getId()] = $formsDeleteComment[$comment->getId()]->createView();
+		}
+
 		return $this->render('article/show.html.twig', [
 			'article' => $article,
 			'formsDelete' => $formsDelete,
+			'formsDeleteComment' => $formsDeleteComment ?? null,
 		]);
 	}
 
