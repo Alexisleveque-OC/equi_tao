@@ -6,7 +6,7 @@ use App\Entity\Comment;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
-class CommentValidatorService
+class CommentService
 {
 	#[Required]
 	public EntityManagerInterface $entityManager;
@@ -14,6 +14,11 @@ class CommentValidatorService
 	public function validateComment(Comment $comment) {
 		$comment->setIsValidate(true);
 		$this->entityManager->persist($comment);
+		$this->entityManager->flush();
+	}
+
+	public function deleteComment(Comment $comment) {
+		$this->entityManager->remove($comment);
 		$this->entityManager->flush();
 	}
 
