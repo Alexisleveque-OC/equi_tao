@@ -44,15 +44,14 @@ class CommentController extends AbstractController
 
 	#[Route(path: '/supprimer/{comment}-{inArticle}', name: 'delete')]
 	public function delete(Comment $comment = null, bool $inArticle = false) {
-		if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles()) ) {
-			if ($this->getUser() !== $comment->getUser()) {
-				$this->addFlash('danger', "Vous n'avez pas le droit de supprimer ce commentaire");
-				return $this->redirectToRoute('app_article.show', [
-					'article_category_slug' => $comment->getArticle()->getCategory()->getSlug(),
-					'id' => $comment->getArticle()->getId(),
-					'article_slug' => $comment->getArticle()->getSlug(),
-				]);
-			}
+
+		if ($this->isGranted('COMMENT_DELETE', $comment) === false) {
+			$this->addFlash('danger', "Vous n'avez pas le droit de supprimer ce commentaire");
+			return $this->redirectToRoute('app_article.show', [
+				'article_category_slug' => $comment->getArticle()->getCategory()->getSlug(),
+				'id' => $comment->getArticle()->getId(),
+				'article_slug' => $comment->getArticle()->getSlug(),
+			]);
 		}
 
 		$this->commentService->deleteComment($comment);
