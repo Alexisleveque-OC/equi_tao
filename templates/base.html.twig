@@ -26,8 +26,9 @@
     {% endblock %}
 </head>
 <body>
-{#{% set categories = app.categoryProvider.getCategories %}#}
+{# {% set categories = app.categoryProvider.getCategories %} #}
 {% set categoryProvider = container.get('App\\Service\\ArticleCategory\\CategoryProvider') %}
+{% set commentProvider = container.get('App\\Service\\Comment\\CommentProvider') %}
 
 {% set categories = categoryProvider.getCategories() %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -44,7 +45,8 @@
                        aria-haspopup="true" aria-expanded="false">Les news</a>
                     <div class="dropdown-menu">
                         {% for category in categories %}
-                            <a class="dropdown-item" href="{{ path('app_article.list') }}?categorie={{ category.slug }}">{{ category.name }}</a>
+                            <a class="dropdown-item"
+                               href="{{ path('app_article.list') }}?categorie={{ category.slug }}">{{ category.name }}</a>
                         {% endfor %}
                     </div>
                 </li>
@@ -63,14 +65,18 @@
             <div>
                 {% if app.user %}
                     <ul class="navbar-nav me-auto">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_comment.list_invalidate') }}">Commentaires</a>
-                        </li>
-                    {% endif %}
+                        {% if is_granted('ROLE_ADMIN') and commentProvider.countNoValidatedComment > 0 %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_comment.list_invalidate') }}">Commentaires à valider
+                                    <div type="button"
+                                            class="btn-notif btn btn-danger">{{ commentProvider.countNoValidatedComment }}</div>
+                                </a>
+                            </li>
+                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="{{ path('app_show_user',{'user_id' : app.user.id}) }}"> {{ app.user.username }} </a>
+                               href="{{ path('app_show_user',{'user_id' : app.user.id}) }}"> {{ app.user.username }}
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_logout') }}">Se deconnecter</a>
