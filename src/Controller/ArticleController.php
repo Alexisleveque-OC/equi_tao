@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\Article\ArticleType;
 use App\Form\ArticleCategory\ArticleCategoryType;
+use App\Form\Comment\CommentType;
 use App\Form\DeleteConfType;
 use App\Repository\ArticleRepository;
 use App\Repository\ImageRepository;
@@ -118,10 +119,15 @@ class ArticleController extends AbstractController
 			$formsDeleteComment[$comment->getId()] = $formsDeleteComment[$comment->getId()]->createView();
 		}
 
+		$formComment = $this->createForm(CommentType::class, null, [
+			'action' => $this->generateUrl('app_comment.create', ['article_id' => $article->getId()]),
+		]);
+
 		return $this->render('article/show.html.twig', [
 			'article' => $article,
 			'formsDelete' => $formsDelete,
 			'formsDeleteComment' => $formsDeleteComment ?? null,
+			'formComment' => $formComment->createView(),
 		]);
 	}
 

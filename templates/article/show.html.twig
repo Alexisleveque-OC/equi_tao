@@ -66,7 +66,12 @@
             </div>
         {% endif %}
     </div>
-    {% if article.comments|length > 0 and article.noValidatedComment == false %}
+    {% if is_granted('COMMENT_CREATE') %}
+        {% include 'comment/create.html.twig' %}
+    {% else %}
+        <h4 class="text-center">Vous devez être connecté pour poster un commentaire</h4>
+    {% endif %}
+    {% if article.comments|length > 0 and article.haveValidateComment == true %}
         <h4 class="text-center">Liste des commentaires: </h4>
         {% include 'comment/list_in_article.html.twig' %}
     {% else %}

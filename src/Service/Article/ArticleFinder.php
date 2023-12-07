@@ -21,4 +21,8 @@ class ArticleFinder
 		return $this->articleRepository->findLastArticles($max);
 	}
 
+	public function findById($id) {
+		return $this->articleRepository->find($id);
+	}
+
 }

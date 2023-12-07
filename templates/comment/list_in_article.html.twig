@@ -1,5 +1,5 @@
 {% block comment %}
-    <div class="comments container">
+    <div class="comments offset-1 col-10">
         {% for comment in article.getComments|reverse %}
             {% if comment.isvalidate %}
                 <div class="row comment">

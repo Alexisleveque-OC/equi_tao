@@ -235,12 +235,16 @@ class Article
         return $this;
     }
 
-	public function getNoValidatedComment():bool {
+	public function haveValidateComment():bool {
+		$validateComment = [];
 		foreach ($this->comments as $comment) {
 			/** @var Comment $comment */
-			if (!$comment->isValidate()) {
-				return true;
+			if ($comment->isValidate()) {
+				$validateComment[] = $comment;
 			}
+		}
+		if (count($validateComment) > 0) {
+			return true;
 		}
 		return false;
 	}
