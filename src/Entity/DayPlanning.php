@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DayPlanningRepository::class)]
-#[UniqueEntity('name', message: 'Ce nom de planning est déjà utilisé.')]
 class DayPlanning
 {
     #[ORM\Id]
@@ -22,6 +21,9 @@ class DayPlanning
 
     #[ORM\OneToMany(mappedBy: 'day', targetEntity: Lesson::class, orphanRemoval: true)]
     private Collection $lessons;
+
+    #[ORM\ManyToOne(inversedBy: 'daysPlanning')]
+    private ?Planning $planning = null;
 
     public function __construct()
     {
@@ -71,6 +73,18 @@ class DayPlanning
                 $lesson->setDay(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlanning(): ?Planning
+    {
+        return $this->planning;
+    }
+
+    public function setPlanning(?Planning $planning): self
+    {
+        $this->planning = $planning;
 
         return $this;
     }

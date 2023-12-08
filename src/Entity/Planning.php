@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PlanningRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -28,12 +30,20 @@ class Planning
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastUpdateDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'plannings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'planning', targetEntity: DayPlanning::class)]
+    private Collection $daysPlanning;
+
+    public function __construct()
+    {
+        $this->daysPlanning = new ArrayCollection();
+    }
 
     public function get(): ?int
     {
@@ -108,6 +118,36 @@ class Planning
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DayPlanning>
+     */
+    public function getDaysPlanning(): Collection
+    {
+        return $this->daysPlanning;
+    }
+
+    public function addDaysPlanning(DayPlanning $daysPlanning): self
+    {
+        if (!$this->daysPlanning->contains($daysPlanning)) {
+            $this->daysPlanning->add($daysPlanning);
+            $daysPlanning->setPlanning($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDaysPlanning(DayPlanning $daysPlanning): self
+    {
+        if ($this->daysPlanning->removeElement($daysPlanning)) {
+            // set the owning side to null (unless already changed)
+            if ($daysPlanning->getPlanning() === $this) {
+                $daysPlanning->setPlanning(null);
+            }
+        }
 
         return $this;
     }
